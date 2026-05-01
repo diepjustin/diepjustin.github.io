@@ -1,221 +1,44 @@
-import re
-
 with open('index.html', 'r') as f:
     content = f.read()
 
-# 1. Update CSS variables
-css_vars = """
-        :root {
-            --bg-color: #fff;
-            --text-color: #333;
-            --heading-color: #111;
-            --link-color: #0366d6;
-            --border-color: #eee;
-            --nav-bg: rgba(255, 255, 255, 0.95);
-            --photo-bg: #f5f5f5;
-            --btn-bg: #111;
-            --btn-text: #fff;
+# 1. Update CSS
+css_addition = """
+        .social-buttons a.social-icon {
+            padding: 0.4rem;
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
-        .dark-mode {
-            --bg-color: #121212;
-            --text-color: #e0e0e0;
-            --heading-color: #fff;
-            --link-color: #58a6ff;
-            --border-color: #333;
-            --nav-bg: rgba(18, 18, 18, 0.95);
-            --photo-bg: #1e1e1e;
-            --btn-bg: #eee;
-            --btn-text: #111;
+        .social-buttons a.social-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
         }
 """
-content = re.sub(r'(<style>\s*)', r'\1' + css_vars, content)
+content = content.replace('        .social-buttons a.resume-btn:hover {', css_addition + '        .social-buttons a.resume-btn:hover {')
 
-# 2. Replace hardcoded colors with variables
-content = re.sub(r'color:\s*#333;', 'color: var(--text-color);', content)
-content = re.sub(r'background-color:\s*#fff;', 'background-color: var(--bg-color);', content)
-content = re.sub(r'color:\s*#111;', 'color: var(--heading-color);', content)
-content = re.sub(r'color:\s*#0366d6;', 'color: var(--link-color);', content)
-content = re.sub(r'border-bottom:\s*1px solid #eee;', 'border-bottom: 1px solid var(--border-color);', content)
-content = re.sub(r'background-color:\s*rgba\(255, 255, 255, 0.95\);', 'background-color: var(--nav-bg);', content)
-content = re.sub(r'color:\s*#555;', 'color: var(--text-color); opacity: 0.8;', content)
-content = re.sub(r'color:\s*#000;', 'color: var(--heading-color);', content)
-content = re.sub(r'border:\s*1px solid #ccc;', 'border: 1px solid var(--border-color);', content)
-content = re.sub(r'background-color:\s*#f9f9f9;', 'background-color: var(--photo-bg);', content)
-content = re.sub(r'border:\s*1px solid #ddd;', 'border: 1px solid var(--border-color);', content)
-content = re.sub(r'border:\s*1px solid #eee;', 'border: 1px solid var(--border-color);', content)
-content = re.sub(r'color:\s*#777;', 'color: var(--text-color); opacity: 0.6;', content)
-content = re.sub(r'background-color:\s*#f5f5f5;', 'background-color: var(--photo-bg);', content)
-content = re.sub(r'border-top:\s*1px solid #eee;', 'border-top: 1px solid var(--border-color);', content)
-content = re.sub(r'color:\s*#444;', 'color: var(--heading-color);', content)
+# 2. Update HTML
+old_socials = """                <a href="https://x.com/Justin_Diep_" target="_blank" rel="noopener">X (Twitter)</a>
+                <a href="https://www.instagram.com/justin_diep_photography/" target="_blank" rel="noopener">Instagram</a>
+                <a href="https://www.linkedin.com/in/diepjustin" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://github.com/diepjustin/diepjustin.github.io" target="_blank" rel="noopener">GitHub</a>"""
 
-# 3. Add Lightbox & Animations CSS
-animations_css = """
-        .article-card {
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border-radius: 4px;
-            padding-bottom: 1rem;
-        }
-        .article-card:hover {
-            transform: translateY(-4px);
-        }
-        figure.photo-item img {
-            width: 100%;
-            height: auto;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-            object-fit: cover;
-            margin-bottom: 0.5rem;
-            background-color: var(--photo-bg);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            cursor: pointer;
-        }
-        figure.photo-item img:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        }
+new_socials = """                <a href="https://x.com/Justin_Diep_" target="_blank" rel="noopener" class="social-icon" aria-label="X (Twitter)">
+                    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/justin_diep_photography/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.20 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/diepjustin" target="_blank" rel="noopener" class="social-icon" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+                <a href="https://github.com/diepjustin/diepjustin.github.io" target="_blank" rel="noopener" class="social-icon" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>"""
+content = content.replace(old_socials, new_socials)
 
-        /* Lightbox */
-        .lightbox {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
-        .lightbox-content {
-            margin: auto;
-            display: block;
-            max-width: 90%;
-            max-height: 80vh;
-            margin-top: 5vh;
-            border-radius: 4px;
-        }
-        #lightbox-caption {
-            margin: auto;
-            display: block;
-            width: 80%;
-            max-width: 800px;
-            text-align: center;
-            color: #ccc;
-            padding: 15px 0;
-            height: 10vh;
-        }
-        .lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 35px;
-            color: #f1f1f1;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .skill-tag {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            color: var(--text-color);
-            font-weight: 500;
-            display: inline-block;
-        }
-"""
-content = re.sub(r'(\.article-card\s*\{\s*display:\s*flex;\s*flex-direction:\s*column;\s*\})', '', content)
-content = re.sub(r'(figure\.photo-item\s*img\s*\{[^}]*\})', '', content)
-content = content.replace('</style>', animations_css + '\n    </style>')
-
-# Nav Dark Mode Toggle Button
-nav_replacement = """    <nav style="display: flex; align-items: center;">
-        <a href="#writing">Writing</a>
-        <a href="#photography">Photography</a>
-        <a href="#video">Video</a>
-        <a href="#about">About</a>
-        <button id="theme-toggle" aria-label="Toggle Dark Mode" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; margin-left: auto;">🌙</button>
-    </nav>"""
-content = re.sub(r'<nav>.*?</nav>', nav_replacement, content, flags=re.DOTALL)
-
-# Add Skills section at the end of About Me
-skills_html = """        <div class="skills-banner" style="margin-top: 2rem; padding: 1.5rem; background-color: var(--photo-bg); border-radius: 8px; border: 1px solid var(--border-color);">
-            <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.2rem; color: var(--heading-color);">Skills & Tools</h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                <span class="skill-tag">Data Analysis (Python, Excel)</span>
-                <span class="skill-tag">Video Editing (Premiere Pro)</span>
-                <span class="skill-tag">Photo Editing (Lightroom, Photoshop)</span>
-                <span class="skill-tag">DSLR Photography</span>
-                <span class="skill-tag">AP Style</span>
-                <span class="skill-tag">CMS (TownNews, WordPress)</span>
-                <span class="skill-tag">FOIA/Public Records Requests</span>
-            </div>
-        </div>
-    </section>"""
-content = content.replace('</section>\n\n    <section id="writing">', skills_html + '\n\n    <section id="writing">')
-
-# Add Lightbox HTML and JS at the bottom
-lightbox_js = """
-    <div id="lightbox" class="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <img class="lightbox-content" id="lightbox-img">
-        <div id="lightbox-caption"></div>
-    </div>
-
-    <script>
-        // Dark Mode Toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-        
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'dark') {
-            body.classList.add('dark-mode');
-            themeToggle.textContent = '☀️';
-        }
-
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            if (body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-                themeToggle.textContent = '☀️';
-            } else {
-                localStorage.setItem('theme', 'light');
-                themeToggle.textContent = '🌙';
-            }
-        });
-
-        // Lightbox
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const lightboxCaption = document.getElementById('lightbox-caption');
-        const closeBtn = document.getElementsByClassName('lightbox-close')[0];
-
-        document.querySelectorAll('figure.photo-item img').forEach(img => {
-            img.addEventListener('click', function() {
-                lightbox.style.display = 'block';
-                lightboxImg.src = this.src;
-                lightboxCaption.innerHTML = this.nextElementSibling.innerHTML;
-            });
-        });
-
-        closeBtn.onclick = function() {
-            lightbox.style.display = 'none';
-        }
-        
-        lightbox.onclick = function(e) {
-            if (e.target !== lightboxImg) {
-                lightbox.style.display = 'none';
-            }
-        }
-    </script>
-</body>"""
-content = content.replace('</body>', lightbox_js)
-
-# Save
 with open('index.html', 'w') as f:
     f.write(content)
 
