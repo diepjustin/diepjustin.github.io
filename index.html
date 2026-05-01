@@ -3,128 +3,789 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coming Soon | Justin Diep</title>
-    <meta name="description" content="Personal website of Justin Diep. Something amazing is in the works.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Justin Diep</title>
+    <meta name="description" content="Personal journalism portfolio of Justin Diep, featuring news reporting and photography.">
+    
+    <!-- Open Graph / SEO Meta Tags -->
+    <meta property="og:title" content="Justin Diep - Journalism Portfolio">
+    <meta property="og:description" content="Journalism student at the University of Nebraska-Lincoln. Reporting, photography, and video journalism portfolio.">
+    <meta property="og:image" content="https://diepjustin.github.io/diepjustin-mug.jpeg">
+    <meta property="og:url" content="https://diepjustin.github.io/">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📰</text></svg>">
+
     <style>
+        
         :root {
-            --bg-color: #0f172a; /* Slate 900 */
-            --text-color: #f8fafc; /* Slate 50 */
-            --accent-color: #38bdf8; /* Light blue 400 */
-            --glow-color: rgba(56, 189, 248, 0.4);
+            --bg-color: #fff;
+            --text-color: #333;
+            --heading-color: #111;
+            --link-color: #0366d6;
+            --border-color: #eee;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --photo-bg: #f5f5f5;
+            --btn-bg: #111;
+            --btn-text: #fff;
         }
-
+        .dark-mode {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --heading-color: #fff;
+            --link-color: #58a6ff;
+            --border-color: #333;
+            --nav-bg: rgba(18, 18, 18, 0.95);
+            --photo-bg: #1e1e1e;
+            --btn-bg: #eee;
+            --btn-text: #111;
+        }
+html {
+            scroll-behavior: smooth;
+        }
         body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
             color: var(--text-color);
-            font-family: 'Inter', sans-serif;
-            overflow: hidden;
-            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-color);
         }
 
-        /* Ambient background glow */
-        .ambient-glow {
-            position: absolute;
-            width: 60vw;
-            height: 60vw;
-            background: radial-gradient(circle, var(--glow-color) 0%, transparent 60%);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-            animation: pulse 8s infinite alternate ease-in-out;
-            pointer-events: none;
-        }
-
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
-        }
-
-        .container {
-            z-index: 1;
-            text-align: center;
-            padding: 3rem 4rem;
-            backdrop-filter: blur(10px);
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            animation: float 6s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        h1, h2, h3 {
+            color: var(--heading-color);
+            margin-top: 2.5rem;
         }
 
         h1 {
-            font-size: 4rem;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: -0.05em;
-            background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 2.5rem;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
         }
 
         p {
-            font-size: 1.25rem;
-            font-weight: 300;
-            color: #94a3b8;
+            margin-bottom: 1.25rem;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        nav {
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            position: sticky;
+            top: 0;
+            background-color: var(--nav-bg);
+            z-index: 1000;
+            padding-top: 1rem;
+            margin-top: -2rem;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        nav a {
+            margin-right: 1.5rem;
+            color: var(--text-color); opacity: 0.8;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: var(--heading-color);
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            margin-top: 2rem;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 0.75rem;
             margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .social-buttons a {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--photo-bg);
+            transition: all 0.2s ease;
+        }
+
+        .social-buttons a:hover {
+            background-color: var(--text-color);
+            color: #fff;
+            border-color: var(--text-color);
+        }
+
+        .social-buttons a.resume-btn {
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            border-color: var(--btn-bg);
+        }
+
+        .social-buttons a.resume-btn:hover {
+            opacity: 0.8;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .intro {
+            font-size: 1.2rem;
+            color: var(--text-color); opacity: 0.8;
+        }
+
+        .project-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .project-item {
             margin-bottom: 2rem;
         }
 
-        .loader {
-            display: inline-flex;
-            gap: 8px;
+        .project-item h3 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
         }
 
-        .dot {
-            width: 12px;
-            height: 12px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out both;
-            box-shadow: 0 0 10px var(--accent-color);
+        .project-item p {
+            margin: 0;
+            color: var(--text-color); opacity: 0.8;
         }
 
-        .dot:nth-child(1) { animation-delay: -0.32s; }
-        .dot:nth-child(2) { animation-delay: -0.16s; }
+        .article-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
 
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
+        
+
+        .article-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .article-card h3 {
+            margin-top: 0;
+            margin-bottom: 0.25rem;
+            font-size: 1.15rem;
+            line-height: 1.4;
+        }
+
+        .tag {
+            font-size: 0.85rem;
+            color: var(--text-color); opacity: 0.6;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.2rem;
+            display: block;
+        }
+
+        .photo-grid, .video-grid, .article-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        figure.photo-item {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        
+
+        figure.photo-item figcaption {
+            font-size: 0.85rem;
+            color: var(--text-color); opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        .portfolio-video {
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background-color: var(--photo-bg);
+        }
+
+        .gallery-heading {
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 4px;
+        }
+
+        .contact-section {
+            text-align: center;
+            padding: 4rem 0;
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-color); opacity: 0.6;
+            font-size: 0.9rem;
+            text-align: center;
         }
 
         @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
-            p { font-size: 1rem; }
-            .container { padding: 2rem; }
+            .photo-grid, .video-grid, .article-grid {
+                grid-template-columns: 1fr;
+            }
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            nav {
+                text-align: center;
+            }
+            nav a {
+                margin: 0 0.75rem;
+                display: inline-block;
+                margin-bottom: 0.5rem;
+            }
+        }
+        .contact-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 2rem;
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: opacity 0.2s ease;
+        }
+        .contact-btn:hover {
+            opacity: 0.8;
+            color: var(--btn-text);
+            text-decoration: none;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+        }
+        .back-to-top:hover {
+            opacity: 1;
+            color: var(--btn-text);
+            text-decoration: none;
+        }
+    
+        .article-card {
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border-radius: 4px;
+            padding-bottom: 1rem;
+        }
+        .article-card:hover {
+            transform: translateY(-4px);
+        }
+        figure.photo-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            object-fit: cover;
+            margin-bottom: 0.5rem;
+            background-color: var(--photo-bg);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+        figure.photo-item img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        .lightbox-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 80vh;
+            margin-top: 5vh;
+            border-radius: 4px;
+        }
+        #lightbox-caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 800px;
+            text-align: center;
+            color: #ccc;
+            padding: 15px 0;
+            height: 10vh;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+
+    
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
         }
     </style>
 </head>
 <body>
-    <div class="ambient-glow"></div>
-    <div class="container">
-        <h1>Coming Soon</h1>
-        <p>Something amazing is in the works.</p>
-        <div class="loader">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+        <nav style="display: flex; align-items: center;">
+        <a href="#writing">Writing</a>
+        <a href="#photography">Photography</a>
+        <a href="#video">Video</a>
+        <a href="#about">About</a>
+        <button id="theme-toggle" aria-label="Toggle Dark Mode" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; margin-left: auto;">🌙</button>
+    </nav>
+
+    <div class="header-container">
+        <img src="diepjustin-mug.jpeg" alt="Justin Diep" class="profile-img">
+        <div>
+            <h1>Justin Diep</h1>
+            <p class="intro">Journalism, advertising and public relations, and broadcasting-media production triple major at the University of Nebraska-Lincoln</p>
+            <div class="social-buttons">
+                <a href="Diep%20Justin%20Resume%20April%202026.pdf" target="_blank" rel="noopener" class="resume-btn">📄 Resume</a>
+                <a href="https://x.com/Justin_Diep_" target="_blank" rel="noopener">X (Twitter)</a>
+                <a href="https://www.instagram.com/justin_diep_photography/" target="_blank" rel="noopener">Instagram</a>
+                <a href="https://www.linkedin.com/in/diepjustin" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://github.com/diepjustin/diepjustin.github.io" target="_blank" rel="noopener">GitHub</a>
+            </div>
         </div>
     </div>
+
+    <section id="about">
+        <h2>About Me</h2>
+        <p>I'm a journalist who covers accountability, from leaked university budget documents to federal immigration courts. I'm currently a news intern at the <a href="https://omaha.com" target="_blank" rel="noopener">Omaha World-Herald</a>, covering just about everything. I collaborated on comprehensive coverage of an ICE raid at an Omaha meatpacking plant and its aftermath, and was ranked among the top-viewed authors across Lee Enterprises' 77 daily newspapers in June 2025.</p>
+        <p>At UNL's campus newspaper, <a href="https://dailynebraskan.com" target="_blank" rel="noopener">The Daily Nebraskan</a>, I serve as assistant news editor and photographer. I lead coverage of the NU Board of Regents and university administration — including breaking stories on UNL's budget cuts using leaked internal documents. As a photographer, I've covered political rallies, concerts and Nebraska volleyball at the 2024 NCAA Final Four. I've been named Rookie of the Semester (fall 2023) and Greatest Contributor in both spring and fall 2025 by The Daily Nebraskan newsroom.</p>
+        <p>I also serve as a videographer for the College of Journalism and Mass Communications' Jacht Ad Agency, producing brand storytelling and marketing content for clients.</p>
+        <p>My earlier experience includes reporting internships at the <a href="https://journalstar.com" target="_blank" rel="noopener">Lincoln Journal Star</a>, covering breaking news, police briefings and features, and <a href="https://www.enterprisepub.com/" target="_blank" rel="noopener">Enterprise Media Group</a>, where I was selected for UNL's Rural Nebraska Journalism Program to report across Washington, Burt and Cuming counties. I began my career as a marketing intern at E & A Consulting Group in Omaha.</p>
+        <p>I got my start in journalism at <a href="https://bhsorator.com/" target="_blank" rel="noopener">Omaha Bryan High School</a>, where I was named the 2023 Nebraska High School Journalist of the Year.</p>
+
+    </section>
+
+    <section id="writing">
+        <h2>Featured Writing</h2>
+
+        <div class="article-grid">
+            <div class="article-card">
+                <a href="https://omaha.com/news/local/crime-courts/article_48d546aa-e476-4fa0-a305-ea19a038f674.html" target="_blank">
+                    <img src="https://bloximages.newyork1.vip.townnews.com/omaha.com/content/tncms/assets/v3/editorial/4/8d/48d546aa-e476-4fa0-a305-ea19a038f674/685639cece02c.preview.png?crop=1600%2C840%2C0%2C29&amp;resize=1200%2C630&amp;order=crop%2Cresize" alt="Article image">
+                </a>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;"><span class="tag" style="margin-bottom: 0;">Omaha World-Herald</span><span style="font-size: 0.8rem; color: var(--text-color); opacity: 0.6;">⏱️ 3 min read</span></div>
+                <h3><a href="https://omaha.com/news/local/crime-courts/article_48d546aa-e476-4fa0-a305-ea19a038f674.html" target="_blank">Most of Omaha ICE raid detainees had no criminal record</a></h3>
+            </div>
+
+            <div class="article-card">
+                <a href="https://www.dailynebraskan.com/news/unl-used-bad-data-to-make-27-5-million-cuts-faculty-say/article_8ad30fe6-4f53-4b7a-9071-5e222854fe6e.html" target="_blank">
+                    <img src="https://bloximages.newyork1.vip.townnews.com/dailynebraskan.com/content/tncms/assets/v3/editorial/8/aa/8aa2c322-85f8-4925-a4c0-16885f9f90ec/690284e5174ba.image.jpg?crop=1763%2C926%2C0%2C124&amp;resize=1200%2C630&amp;order=crop%2Cresize" alt="Article image">
+                </a>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;"><span class="tag" style="margin-bottom: 0;">The Daily Nebraskan</span><span style="font-size: 0.8rem; color: var(--text-color); opacity: 0.6;">⏱️ 4 min read</span></div>
+                <h3><a href="https://www.dailynebraskan.com/news/unl-used-bad-data-to-make-27-5-million-cuts-faculty-say/article_8ad30fe6-4f53-4b7a-9071-5e222854fe6e.html" target="_blank">UNL used bad data to make $27.5 million cuts, faculty say</a></h3>
+            </div>
+
+            <div class="article-card">
+                <a href="https://omaha.com/news/local/article_10f919e4-8d35-4b71-8b67-d9ed748ab0b8.html" target="_blank">
+                    <img src="https://bloximages.newyork1.vip.townnews.com/omaha.com/content/tncms/assets/v3/editorial/1/0f/10f919e4-8d35-4b71-8b67-d9ed748ab0b8/6894ed6c549f1.preview.jpg?crop=1920%2C1008%2C0%2C35&amp;resize=1200%2C630&amp;order=crop%2Cresize" alt="Article image">
+                </a>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;"><span class="tag" style="margin-bottom: 0;">Omaha World-Herald</span><span style="font-size: 0.8rem; color: var(--text-color); opacity: 0.6;">⏱️ 8 min read</span></div>
+                <h3><a href="https://omaha.com/news/local/article_10f919e4-8d35-4b71-8b67-d9ed748ab0b8.html" target="_blank">Horizon Biofuels plant had dust complaints before fatal explosion</a></h3>
+            </div>
+
+            <div class="article-card">
+                <a href="https://www.nebraskanewsservice.net/news/south-omaha-to-mccook-a-freshman-senators-fight-for-nebraska-s-immigrant-community/article_6c1eb962-03b7-4493-9fc5-1aac3ec96437.html" target="_blank">
+                    <img src="https://bloximages.chicago2.vip.townnews.com/nebraskanewsservice.net/content/tncms/assets/v3/editorial/0/73/073dd761-d1fe-453d-ae68-2ba48772a51a/6941b776cd50b.image.jpg?crop=1763%2C926%2C0%2C124&amp;resize=1200%2C630&amp;order=crop%2Cresize" alt="Article image">
+                </a>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;"><span class="tag" style="margin-bottom: 0;">Nebraska News Service</span><span style="font-size: 0.8rem; color: var(--text-color); opacity: 0.6;">⏱️ 7 min read</span></div>
+                <h3><a href="https://www.nebraskanewsservice.net/news/south-omaha-to-mccook-a-freshman-senators-fight-for-nebraska-s-immigrant-community/article_6c1eb962-03b7-4493-9fc5-1aac3ec96437.html" target="_blank">Sen. Margo Juarez’s battle with Nebraska Gov. Pillen over McCook ICE detention center</a></h3>
+            </div>
+
+            <div class="article-card">
+                <a href="https://omaha.com/news/state-regional/article_635efd64-6da7-494e-afa9-e354371f81da.html" target="_blank">
+                    <img src="https://bloximages.newyork1.vip.townnews.com/omaha.com/content/tncms/assets/v3/editorial/6/35/635efd64-6da7-494e-afa9-e354371f81da/69e21d0105717.preview.jpg?crop=1763%2C926%2C0%2C125&amp;resize=1200%2C630&amp;order=crop%2Cresize" alt="Article image">
+                </a>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;"><span class="tag" style="margin-bottom: 0;">Omaha World-Herald</span><span style="font-size: 0.8rem; color: var(--text-color); opacity: 0.6;">⏱️ 7 min read</span></div>
+                <h3><a href="https://omaha.com/news/state-regional/article_635efd64-6da7-494e-afa9-e354371f81da.html" target="_blank">McCook ICE detention center below contracted capacity months after opening</a></h3>
+            </div>
+
+            <div class="article-card">
+                <a href="https://www.dailynebraskan.com/news/jeffrey-epstein-calls-university-of-nebraska-creighton-not-good-places/article_961382a0-105f-40bd-b7fe-9100d4f66f42.html" target="_blank">
+                    <img src="https://bloximages.newyork1.vip.townnews.com/dailynebraskan.com/content/tncms/assets/v3/editorial/8/d6/8d612ce7-c2f9-4ef0-bdfc-18015fe89e95/698bc0c7d405f.image.jpg?crop=1763%2C926%2C0%2C124&amp;resize=1200%2C630&amp;order=crop%2Cresize" alt="Article image">
+                </a>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;"><span class="tag" style="margin-bottom: 0;">The Daily Nebraskan</span><span style="font-size: 0.8rem; color: var(--text-color); opacity: 0.6;">⏱️ 4 min read</span></div>
+                <h3><a href="https://www.dailynebraskan.com/news/jeffrey-epstein-calls-university-of-nebraska-creighton-not-good-places/article_961382a0-105f-40bd-b7fe-9100d4f66f42.html" target="_blank">Epstein says University of Nebraska, Creighton ‘not good places’</a></h3>
+            </div>
+
+            <div class="article-card">
+                <a href="https://journalstar.com/life-entertainment/local/faith-values/article_150c4da3-aa45-43af-81c2-d069619046a9.html" target="_blank">
+                    <img src="https://bloximages.chicago2.vip.townnews.com/journalstar.com/content/tncms/assets/v3/editorial/1/50/150c4da3-aa45-43af-81c2-d069619046a9/681d1766be8b9.preview.jpg?crop=1763%2C926%2C0%2C124&amp;resize=1200%2C630&amp;order=crop%2Cresize" alt="Article image">
+                </a>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;"><span class="tag" style="margin-bottom: 0;">Lincoln Journal Star</span><span style="font-size: 0.8rem; color: var(--text-color); opacity: 0.6;">⏱️ 6 min read</span></div>
+                <h3><a href="https://journalstar.com/life-entertainment/local/faith-values/article_150c4da3-aa45-43af-81c2-d069619046a9.html" target="_blank">Nebraskans react to election of Leo XIV, 1st American pope</a></h3>
+            </div>
+
+            <div class="article-card">
+                <a href="https://journalstar.com/sports/huskers/football/article_4e6f519e-6d53-11ef-a496-97e20091e293.html" target="_blank">
+                    <img src="https://bloximages.chicago2.vip.townnews.com/journalstar.com/content/tncms/assets/v3/editorial/4/e6/4e6f519e-6d53-11ef-a496-97e20091e293/66dcdf4f79fcd.preview.jpg?crop=1751%2C919%2C0%2C33&amp;resize=1200%2C630&amp;order=crop%2Cresize" alt="Article image">
+                </a>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;"><span class="tag" style="margin-bottom: 0;">Lincoln Journal Star</span><span style="font-size: 0.8rem; color: var(--text-color); opacity: 0.6;">⏱️ 3 min read</span></div>
+                <h3><a href="https://journalstar.com/sports/huskers/football/article_4e6f519e-6d53-11ef-a496-97e20091e293.html" target="_blank">Fans on both sides of Nebraska-Colorado rivalry reflect</a></h3>
+            </div>
+
+            <div class="article-card">
+                <a href="https://journalstar.com/news/local/article_13ff1f98-af58-11ef-86fd-3bb64b0de42d.html" target="_blank">
+                    <img src="https://bloximages.chicago2.vip.townnews.com/journalstar.com/content/tncms/assets/v3/editorial/1/3f/13ff1f98-af58-11ef-86fd-3bb64b0de42d/674b7e2399e9b.preview.jpg?crop=1782%2C936%2C0%2C113&amp;resize=1200%2C630&amp;order=crop%2Cresize" alt="Article image">
+                </a>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;"><span class="tag" style="margin-bottom: 0;">Lincoln Journal Star</span><span style="font-size: 0.8rem; color: var(--text-color); opacity: 0.6;">⏱️ 7 min read</span></div>
+                <h3><a href="https://journalstar.com/news/local/article_13ff1f98-af58-11ef-86fd-3bb64b0de42d.html" target="_blank">Lincoln businesses, shoppers feel pressure with short season</a></h3>
+            </div>
+
+            <div class="article-card">
+                <a href="https://journalstar.com/news/local/article_5860d84e-caaf-11ef-9a33-1be0894ecc5b.html" target="_blank">
+                    <img src="https://bloximages.chicago2.vip.townnews.com/journalstar.com/content/tncms/assets/v3/editorial/5/86/5860d84e-caaf-11ef-9a33-1be0894ecc5b/67798bf5ce093.preview.jpg?crop=1763%2C926%2C0%2C124&amp;resize=1200%2C630&amp;order=crop%2Cresize" alt="Article image">
+                </a>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;"><span class="tag" style="margin-bottom: 0;">Lincoln Journal Star</span><span style="font-size: 0.8rem; color: var(--text-color); opacity: 0.6;">⏱️ 4 min read</span></div>
+                <h3><a href="https://journalstar.com/news/local/article_5860d84e-caaf-11ef-9a33-1be0894ecc5b.html" target="_blank">Lincoln-based Christian Record Services helps blind people</a></h3>
+            </div>
+        </div>
+    </section>
+
+    <section id="photography">
+        <h2>Photography</h2>
+        <p>A selection of moments captured across various beats, from Division I athletics to breaking news and community events.</p>
+
+        <h3 class="gallery-heading">News, Politics & Features</h3>
+        <div class="photo-grid">
+            <figure class="photo-item">
+                <img src="photos/31902350-e8e5-11f0-99f8-b3fa2ebac328.jpeg" alt="Lincoln Fire & Rescue" loading="lazy">
+                <figcaption>A Lincoln Fire & Rescue firefighter douses smoldering debris at a lumber yard near the University of Nebraska-Lincoln on Tuesday, March 11, 2025, in Lincoln. The fire damaged a nearby home and a few university vehicles.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/6632c787c8f97.image.webp" alt="Protester at Nebraska Union" loading="lazy">
+                <figcaption>A protester sits on a rock outside the Nebraska Union by Broyhill Fountain on Wednesday, May 1, 2024, in Lincoln. The protest was held all day to advocate for arrested university protesters, the loss of civilian lives in Gaza and the West Bank and for the University of Nebraska system to be more transparent with funds and grants from Israel.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/68044d92cca6c.hires.jpg" alt="Anti-Trump protest" loading="lazy">
+                <figcaption>Demonstrators gather outside the Nebraska Republican Party Headquarters for an anti-Trump protest on Saturday, April 19, 2025 in Lincoln, Neb. Protests took place in cities all over the the United States as part of the 50501—50 protests, 50 states, 1 movement.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/31bb5200-e8e5-11f0-99f8-b3fa2ebac328.jpeg" alt="Project 2025 Protests" loading="lazy">
+                <figcaption>Dan Lued waves a heart flag outside the Nebraska State Capitol to demonstrate against Project 2025 and President Donald Trump’s policies on Wednesday, Feb. 5, 2025, in Lincoln. Protests took place in cities across the United States as part of the 50501—50 protests: 50 states, 1 movement.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/318acc20-e8e5-11f0-99f8-b3fa2ebac328.jpeg" alt="Charlie Kirk vigil" loading="lazy">
+                <figcaption>A person in a Make America Great Again hat holds flowers at a Charlie Kirk vigil outside the Nebraska Union on Wednesday, Sept. 17, 2025 in Lincoln. Kirk, the CEO and co-founder of Turning Point USA, was shot and killed at Utah Valley University Wednesday, Sept. 10.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/663289492b976.image.webp" alt="Paul Barnes piano" loading="lazy">
+                <figcaption>Reflected in the raised lid of a piano, UNL Professor of Piano Paul Barnes performs an outdoor set inside the Richard Serra sculpture "Greenpoint" on Wednesday, May 1, 2024. The pop-up performance kicked off the Lincoln Calling music and arts festival, featuring works by composer Philip Glass as a tribute to the late sculptor.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/318f38f0-e8e5-11f0-99f8-b3fa2ebac328.jpeg" alt="Noon Year's Eve" loading="lazy">
+                <figcaption>Camden Chadwell, 12, left, and Lila Chadwell, 3, blow horns at each other at the Henry Doorly Zoo & Aquarium’s Noon Year's Eve celebration. The event offered an early alternative for families with young children to ring in 2026.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/67b652c396034.image.webp" alt="Off Leash Dog Bar" loading="lazy">
+                <figcaption>Dogs run around Off Leash Dog Bar on Tuesday, Feb. 18, 2025, in Lincoln.</figcaption>
+            </figure>
+        </div>
+
+        <h3 class="gallery-heading">Sports</h3>
+        <div class="photo-grid">
+            <figure class="photo-item">
+                <img src="photos/31aef5f0-e8e5-11f0-99f8-b3fa2ebac328.jpeg" alt="Nebraska Basketball Court Storming" loading="lazy">
+                <figcaption>Nebraska’s Jared Garcia (15) celebrates winning the game against Michigan State as fans storm the field at Pinnacle Bank Arena on Friday, Jan. 2, 2026, in Lincoln.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/31ae32a0-e8e5-11f0-99f8-b3fa2ebac328.jpeg" alt="Nebraska Football" loading="lazy">
+                <figcaption>Nebraska’s Nyziah Hunter (13) runs the ball into the end zone without one of his cleats during the fourth quarter of the game against Michigan State at Memorial Stadium on Saturday, Oct. 4, 2025 in Lincoln.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/31bbee40-e8e5-11f0-99f8-b3fa2ebac328.jpeg" alt="Nebraska Volleyball" loading="lazy">
+                <figcaption>Nebraska’s Laney Choboy (6) wipes her face off after losing the NCAA regional semifinals against Texas A&M at the Bob Devaney Sports Center on Sunday, Dec. 15, 2025, in Lincoln.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/318fae20-e8e5-11f0-99f8-b3fa2ebac328.jpeg" alt="Nebraska Football" loading="lazy">
+                <figcaption>Nebraska’s Emmett Johnson (21) scores a touchdown during the second quarter of the game against Akron at Memorial Stadium on Saturday, Sept. 6, 2025, in Lincoln.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/JK0A9763.JPG" alt="Nebraska Men's Basketball" loading="lazy">
+                <figcaption>Nebraska's Berke Büyüktuncel (9) dunks the ball during the second half of the game against West Georgia at Pinnacle Bank Arena on Monday, Nov. 3, 2025, in Lincoln.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/693f4eda83565.image.webp" alt="Nebraska Volleyball" loading="lazy">
+                <figcaption>Nebraska’s Andi Jackson (15) hits the ball during the fourth set of the game against Texas A&M at the Bob Devaney Sports Center on Sunday, Dec. 15, 2025, in Lincoln.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/31c9a9e0-e8e5-11f0-99f8-b3fa2ebac328.jpeg" alt="Nebraska Volleyball" loading="lazy">
+                <figcaption>Nebraska celebrates as Creighton’s serve goes out of bounds during the third set of the game at the CHI Health Center on Tuesday, Sept. 16, 2025, in Omaha.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/31dbab40-e8e5-11f0-99f8-b3fa2ebac328.jpeg" alt="Nebraska Men's Basketball" loading="lazy">
+                <figcaption>Nebraska’s Sam Hoiberg (1), New Hampshire's KiJan Robinson (8) and John Squire (7) reach for the ball during the first half of the game at Pinnacle Bank Arena on Tuesday, Dec. 30, 2025, in Lincoln.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/6948ba0f0b155.hires-2.jpg" alt="Nebraska Basketball" loading="lazy">
+                <figcaption>Nebraska's Sam Hoiberg (1) jumps to shoot the ball during the second half of the game against North Dakota at Pinnacle Bank Arena on Sunday, Dec. 21, 2025, in Lincoln.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/31a07700-e8e5-11f0-99f8-b3fa2ebac328.jpeg" alt="Nebraska Men's Basketball" loading="lazy">
+                <figcaption>Nebraska’s Jamarques Lawrence (10) dribbles the ball during the first half of the game against Michigan State at Pinnacle Bank Arena on Friday, Jan. 2, 2026, in Lincoln.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/6948ba141c28a.image.webp" alt="Nebraska Men's Basketball" loading="lazy">
+                <figcaption>Nebraska's Jamarques Lawrence (10) dribbles the ball during the second half of the game against North Dakota at Pinnacle Bank Arena on Sunday, Dec. 21, 2025, in Lincoln.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/4V0A0150%202.JPG" alt="Pinnacle Bank Arena AVCA" loading="lazy">
+                <figcaption>A look at Pinnacle Bank Arena during AVCA tournament match between Nebraska and Stanford on Sunday, Aug. 24, 2025, in Lincoln.</figcaption>
+            </figure>
+        </div>
+
+        <h3 class="gallery-heading">Music & Concerts</h3>
+        <div class="photo-grid">
+            <figure class="photo-item">
+                <img src="photos/JK0A0810.JPG" alt="Joyrager Performance" loading="lazy">
+                <figcaption>Joyrager performs at UPC’s Battle of the Bands at the Bourbon Theater, 1415 O St., on Wednesday, Oct. 1, 2025 in Lincoln. Joyrager and Hold Your Breath were voted as the winners of Battle of the Bands.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/31ad6f50-e8e5-11f0-99f8-b3fa2ebac328.jpeg" alt="Battle of the Bands" loading="lazy">
+                <figcaption>Mauricio Aguilera-Ortiz of Hold Your Breath performs at Battle of the Bands at the Bourbon Theater on Wednesday, Oct. 1, 2025 in Lincoln. Hold your Breath and Joyrager were voted as the winners of Battle of the Bands.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/69918ea941d6f.image.webp" alt="Social Cinema" loading="lazy">
+                <figcaption>Social Cinema performs at Bodega’s Alley for night four of Lincoln Exposed on Sunday, Feb. 15, 2026, in Lincoln.</figcaption>
+            </figure>
+            <figure class="photo-item">
+                <img src="photos/31a001d0-e8e5-11f0-99f8-b3fa2ebac328.jpeg" alt="Faith Revival Night" loading="lazy">
+                <figcaption>The Mercy City Church worship team perform during the Faith Revival Night at East Stadium Loop on Sunday, Nov. 9, 2025, in Lincoln. Nebraska’s Dylan Raiola and Mercy City Church put on the event to get more people connected to their faith.</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <section id="video">
+        <h2>Video</h2>
+        <p>Selected broadcast media and video journalism projects.</p>
+        <div class="video-list">
+            <div class="project-item">
+                <h3>On the Border: Sherry Wounded Foot's Story</h3>
+                <p>I assisted with filming an in-depth investigative reporting documentary led by Marissa Lindemann and Olivia Reed, and published by <a href="https://www.nebraskanewsservice.net/investigative/on-the-border-sherry-wounded-foots-story/article_7b7f7504-0c93-11ef-b62d-97c5ff0f39b5.html" target="_blank">Nebraska News Service</a>. Lindemann and Reed created the documentary for an in-depth reporting class on murdered and missing marginalized women. Specifically, I was brought on to help capture interviews and b-roll during their trip to Pine Ridge, South Dakota.</p>
+                <p style="margin-bottom: 1.5rem; color: var(--text-color); opacity: 0.8;"><em>*The documentary received an Award of Excellence from the <a href="https://www.beaweb.org/OL/2024_student-winners" target="_blank">Broadcast Education Association On Location</a>.</em></p>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/a7qSZyAqEJE?si=P3Za_M8T93sWH9-2" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem;" class="fade-in-section">
+                <div class="project-item" style="margin-bottom: 0;">
+                    <h3 style="font-size: 1.15rem; margin-top: 0;">Joyrager - Dooya?</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem; color: var(--text-color); opacity: 0.8;"><em>*Won a Student Production Award from the Heartland Region of The NATAS.</em></p>
+                    <div class="video-container" style="margin-top: 0;">
+                        <iframe src="https://www.youtube.com/embed/EK8JRFMSdrM?si=33PJib4ZIu4U4jAg" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <div class="project-item" style="margin-bottom: 0;">
+                    <h3 style="font-size: 1.15rem; margin-top: 0;">Joyrager - Holiday Punk</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem; color: var(--text-color); opacity: 0.8;">Another official music video project I worked on for Joyrager.</p>
+                    <div class="video-container" style="margin-top: 0;">
+                        <iframe src="https://www.youtube.com/embed/7KyZUMys4xQ?si=yIp4lPKO3j6ASYHM" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2>Let's Connect</h2>
+        <p>I'm always looking for new reporting opportunities and creative collaborations. Drop me a line below.</p>
+        
+        <form action="https://api.web3forms.com/submit" method="POST" style="max-width: 500px; margin: 2rem auto; text-align: left; display: flex; flex-direction: column; gap: 1rem;" class="fade-in-section">
+            <input type="hidden" name="access_key" value="71d9c2c5-cc13-47a5-8b1c-6b508c1d7421">
+            
+            <input type="text" name="name" placeholder="Your Name" required style="padding: 0.8rem; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--photo-bg); color: var(--text-color); font-family: inherit;">
+            
+            <input type="email" name="email" placeholder="Your Email" required style="padding: 0.8rem; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--photo-bg); color: var(--text-color); font-family: inherit;">
+            
+            <textarea name="message" placeholder="Your Message" rows="5" required style="padding: 0.8rem; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--photo-bg); color: var(--text-color); font-family: inherit; resize: vertical;"></textarea>
+            
+            <button type="submit" class="contact-btn" style="border: none; cursor: pointer; width: 100%; margin-top: 0.5rem; font-family: inherit; font-size: 1rem;">Send Message</button>
+        </form>
+    </section>
+
+    <a href="#" class="back-to-top" aria-label="Back to top">↑</a>
+
+    <footer>
+        <p>&copy; 2026 Justin Diep.</p>
+    </footer>
+
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+        <div id="lightbox-caption"></div>
+    </div>
+
+    <script>
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeToggle.textContent = '☀️';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeToggle.textContent = '🌙';
+            }
+        });
+
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const closeBtn = document.getElementsByClassName('lightbox-close')[0];
+
+        document.querySelectorAll('figure.photo-item img').forEach(img => {
+            img.addEventListener('click', function() {
+                lightbox.style.display = 'block';
+                lightboxImg.src = this.src;
+                lightboxCaption.innerHTML = this.nextElementSibling.innerHTML;
+            });
+        });
+
+        closeBtn.onclick = function() {
+            lightbox.style.display = 'none';
+        }
+        
+        lightbox.onclick = function(e) {
+            if (e.target !== lightboxImg) {
+                lightbox.style.display = 'none';
+            }
+        }
+    
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.article-card, .photo-item, .video-list > div, h2, .contact-section form').forEach((el) => {
+            el.classList.add('fade-in-section');
+            observer.observe(el);
+        });
+    </script>
+
 </body>
 </html>
