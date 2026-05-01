@@ -795,7 +795,7 @@ html {
             });
         }, observerOptions);
 
-        document.querySelectorAll('.article-card, .photo-item, .video-list > div, h2, .contact-section form').forEach((el) => {
+        document.querySelectorAll('.article-card, .photo-item, .video-list > div, h2, .contact-section form, .muckrack-widget-container').forEach((el) => {
             el.classList.add('fade-in-section');
             observer.observe(el);
         });
