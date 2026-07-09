@@ -941,71 +941,6 @@ html {
             }
         });
 
-        // ---- Photo carousels (on-page sliding rows) ----
-        document.querySelectorAll('#photography .photo-grid').forEach(track => {
-            const items = Array.from(track.children);
-            if (!items.length) return;
-
-            // Wrap the track so arrows and dots can overlay it
-            const carousel = document.createElement('div');
-            carousel.className = 'carousel';
-            track.parentNode.insertBefore(carousel, track);
-            carousel.appendChild(track);
-            track.classList.add('carousel-track');
-
-            const makeBtn = (cls, label, glyph) => {
-                const b = document.createElement('button');
-                b.type = 'button';
-                b.className = 'carousel-btn ' + cls;
-                b.setAttribute('aria-label', label);
-                b.innerHTML = glyph;
-                return b;
-            };
-            const prev = makeBtn('prev', 'Previous photos', '&#8249;');
-            const next = makeBtn('next', 'Next photos', '&#8250;');
-
-            const dots = document.createElement('div');
-            dots.className = 'carousel-dots';
-            items.forEach((item, i) => {
-                const dot = document.createElement('button');
-                dot.type = 'button';
-                dot.className = 'carousel-dot';
-                dot.setAttribute('aria-label', 'Go to photo ' + (i + 1));
-                dot.addEventListener('click', () => {
-                    track.scrollTo({ left: item.offsetLeft - items[0].offsetLeft, behavior: 'smooth' });
-                });
-                dots.appendChild(dot);
-            });
-
-            carousel.append(prev, next, dots);
-
-            const step = () => {
-                const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-                return items[0].getBoundingClientRect().width + gap;
-            };
-
-            prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-            next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
-
-            const update = () => {
-                const img = items[0].querySelector('img');
-                if (img && img.offsetHeight) {
-                    const centerY = img.offsetTop + img.offsetHeight / 2;
-                    prev.style.top = centerY + 'px';
-                    next.style.top = centerY + 'px';
-                }
-                const idx = Math.round(track.scrollLeft / step());
-                Array.from(dots.children).forEach((d, i) => d.classList.toggle('active', i === idx));
-                prev.disabled = track.scrollLeft <= 2;
-                next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
-            };
-
-            track.addEventListener('scroll', update, { passive: true });
-            window.addEventListener('resize', update);
-            window.addEventListener('load', update);
-            update();
-        });
-
         // ---- Lightbox with prev/next navigation ----
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
@@ -1025,20 +960,12 @@ html {
             const cap = img.nextElementSibling;
             lightboxCaption.innerHTML = cap ? cap.innerHTML : '';
         };
-
+        const openLightbox = (group, i) => {
+            lbGroup = group;
+            lightbox.style.display = 'block';
+            showLbPhoto(i);
+        };
         const closeLightbox = () => { lightbox.style.display = 'none'; };
-
-        // Each photo opens its own section as a navigable group
-        document.querySelectorAll('#photography .photo-grid').forEach(track => {
-            const group = Array.from(track.querySelectorAll('figure.photo-item img'));
-            group.forEach((img, i) => {
-                img.addEventListener('click', () => {
-                    lbGroup = group;
-                    lightbox.style.display = 'block';
-                    showLbPhoto(i);
-                });
-            });
-        });
 
         closeBtn.addEventListener('click', closeLightbox);
         lbPrev.addEventListener('click', (e) => { e.stopPropagation(); showLbPhoto(lbIndex - 1); });
@@ -1066,6 +993,120 @@ html {
             if (Math.abs(dx) > 40) showLbPhoto(lbIndex + (dx < 0 ? 1 : -1));
             touchStartX = null;
         }, { passive: true });
+
+        // ---- Photo carousels: infinite-looping sliding rows ----
+        document.querySelectorAll('#photography .photo-grid').forEach(track => {
+            const originals = Array.from(track.children);
+            const n = originals.length;
+            if (!n) return;
+
+            // Real images (originals, in order) — the lightbox navigates these
+            const group = originals.map(fig => fig.querySelector('img'));
+
+            // Wrap the track so arrows and dots can overlay it
+            const carousel = document.createElement('div');
+            carousel.className = 'carousel';
+            track.parentNode.insertBefore(carousel, track);
+            carousel.appendChild(track);
+            track.classList.add('carousel-track');
+
+            // Clone the whole set before and after the originals for a seamless loop
+            const cloneSet = () => originals.map(fig => {
+                const c = fig.cloneNode(true);
+                c.classList.add('carousel-clone', 'is-visible'); // clones never fade/hide
+                c.setAttribute('aria-hidden', 'true');
+                return c;
+            });
+            const head = cloneSet();
+            const tail = cloneSet();
+            const headFrag = document.createDocumentFragment();
+            head.forEach(c => headFrag.appendChild(c));
+            track.insertBefore(headFrag, track.firstChild);
+            tail.forEach(c => track.appendChild(c));
+
+            // Any slide (real or clone) opens the lightbox at its real index
+            [...head, ...originals, ...tail].forEach((fig, idx) => {
+                const img = fig.querySelector('img');
+                if (img) img.addEventListener('click', () => openLightbox(group, idx % n));
+            });
+
+            // Controls
+            const makeBtn = (cls, label, glyph) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'carousel-btn ' + cls;
+                b.setAttribute('aria-label', label);
+                b.innerHTML = glyph;
+                return b;
+            };
+            const prev = makeBtn('prev', 'Previous photos', '&#8249;');
+            const next = makeBtn('next', 'Next photos', '&#8250;');
+
+            const dots = document.createElement('div');
+            dots.className = 'carousel-dots';
+            originals.forEach((item, i) => {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'carousel-dot';
+                dot.setAttribute('aria-label', 'Go to photo ' + (i + 1));
+                dot.addEventListener('click', () => track.scrollTo({ left: item.offsetLeft, behavior: 'smooth' }));
+                dots.appendChild(dot);
+            });
+
+            carousel.append(prev, next, dots);
+
+            const step = () => {
+                const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+                return originals[0].getBoundingClientRect().width + gap;
+            };
+            const setWidth = () => n * step();
+
+            // Instant (non-animated) jump, used only to recenter the loop
+            const jumpTo = (x) => {
+                const prevBehavior = track.style.scrollBehavior;
+                track.style.scrollBehavior = 'auto';
+                track.scrollLeft = x;
+                track.style.scrollBehavior = prevBehavior;
+            };
+
+            // Keep scroll within the middle (original) set. Head/tail are identical
+            // clones, so shifting by one set width is visually seamless.
+            const recenter = () => {
+                const sw = setWidth();
+                if (!sw) return;
+                if (track.scrollLeft < sw) jumpTo(track.scrollLeft + sw);
+                else if (track.scrollLeft >= 2 * sw) jumpTo(track.scrollLeft - sw);
+            };
+
+            prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+            next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+
+            const update = () => {
+                const img = originals[0].querySelector('img');
+                if (img && img.offsetHeight) {
+                    const centerY = img.offsetTop + img.offsetHeight / 2;
+                    prev.style.top = centerY + 'px';
+                    next.style.top = centerY + 'px';
+                }
+                const sw = setWidth();
+                const rel = sw ? Math.round((track.scrollLeft - sw) / step()) : 0;
+                const active = ((rel % n) + n) % n;
+                Array.from(dots.children).forEach((d, i) => d.classList.toggle('active', i === active));
+            };
+
+            // Recenter after scrolling settles, so it never fights an active drag/animation
+            let settleTimer;
+            track.addEventListener('scroll', () => {
+                update();
+                clearTimeout(settleTimer);
+                settleTimer = setTimeout(recenter, 120);
+            }, { passive: true });
+
+            const reset = () => { jumpTo(setWidth()); update(); };
+            window.addEventListener('resize', reset);
+            window.addEventListener('load', reset);
+            requestAnimationFrame(reset);
+        });
 
         // Intersection Observer for scroll animations
         const observerOptions = {
