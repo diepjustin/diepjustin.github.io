@@ -328,7 +328,7 @@ html {
             .social-buttons {
                 justify-content: center;
             }
-            .photo-grid, .video-grid, .article-grid {
+            .photo-grid, .video-grid, .article-grid, .project-grid {
                 grid-template-columns: 1fr;
             }
             .video-duo {
@@ -400,6 +400,59 @@ html {
         }
         .article-card:hover {
             transform: translateY(-4px);
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.5rem;
+            background-color: var(--photo-bg);
+            transition: transform 0.2s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .project-card h3 {
+            margin: 0 0 0.6rem;
+            font-size: 1.25rem;
+            line-height: 1.3;
+        }
+
+        .project-card p {
+            margin: 0 0 1.25rem;
+            color: var(--text-color);
+            opacity: 0.85;
+            line-height: 1.6;
+        }
+
+        .project-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: auto;
+        }
+
+        .project-links a {
+            font-size: 0.9rem;
+            padding: 0.45rem 0.9rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-decoration: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .project-links a:hover {
+            border-color: var(--link-color);
         }
         figure.photo-item img {
             width: 100%;
@@ -598,6 +651,7 @@ html {
         <a href="#writing">Writing</a>
         <a href="#photography">Photography</a>
         <a href="#video">Video</a>
+        <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
         <button id="theme-toggle" aria-label="Toggle Dark Mode" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; margin-left: auto;">🌙</button>
     </nav>
@@ -879,6 +933,21 @@ html {
         </div>
     </section>
 
+    <section id="projects" style="padding-top: 6rem; margin-top: -6rem;">
+        <h2>Projects</h2>
+
+        <div class="project-grid">
+            <div class="project-card fade-in-section">
+                <h3>University of Nebraska Contracts</h3>
+                <p>A searchable database of University of Nebraska spending. I built a scraper that pulls every NU contract and purchase order from the Nebraska State Contracts Database — more than 24,700 contracts and 7,600 purchase orders dating back to 1977 — and publishes them as a site anyone can search by vendor, amount or date.</p>
+                <div class="project-links">
+                    <a href="ne-contracts/">Open the database</a>
+                    <a href="https://github.com/diepjustin/diepjustin.github.io/tree/main/ne-contracts" target="_blank" rel="noopener">Source on GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="contact" class="contact-section">
         <h2>Let's Connect</h2>
         <p>I'm always looking for new reporting opportunities and creative collaborations. Drop me a line below.</p>
@@ -1106,7 +1175,7 @@ html {
             threshold: 0.1
         };
 
-        const fadeTargets = document.querySelectorAll('.article-card, .photo-item, .video-list > div, h2, .contact-section form');
+        const fadeTargets = document.querySelectorAll('.article-card, .photo-item, .video-list > div, .project-card, h2, .contact-section form');
         const revealAll = () => fadeTargets.forEach(el => el.classList.add('is-visible'));
 
         if ('IntersectionObserver' in window) {
