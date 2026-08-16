@@ -2,9 +2,10 @@ name: NE Contracts daily scrape
 
 on:
   schedule:
-    # Both fire every day; the "only near 10pm Central" gate below makes
-    # exactly one of them do anything on any given day. Two entries exist
-    # because GitHub Actions cron is UTC-only with no DST awareness.
+    # Both fire every day; the gate step below lets through only the entry
+    # matching the current UTC offset, so exactly one does anything on any
+    # given day. Two entries exist because GitHub Actions cron is UTC-only
+    # with no DST awareness.
     - cron: '0 3 * * *'   # 10pm Central during CDT (UTC-5, 03:00 UTC next day)
     - cron: '0 4 * * *'   # 10pm Central during CST (UTC-6, 04:00 UTC next day)
   workflow_dispatch:
@@ -29,66 +30,129 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Gate on local Central time / compute weekday
+      - name: Pick the DST-correct cron entry / compute weekday
         id: gate
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+          FORCE_PUBLISH: ${{ github.event.inputs.force_publish }}
         run: |
-          hour=$(TZ=America/Chicago date +%H)
-          dow=$(TZ=America/Chicago date +%u)   # 1=Mon ... 7=Sun
-          echo "dow=$dow" >> "$GITHUB_OUTPUT"
-          if [ "$hour" = "22" ]; then
-            echo "proceed=true" >> "$GITHUB_OUTPUT"
+          # Gate on *which* cron entry fired, never on the wall clock. GitHub's
+          # scheduler routinely fires 30-90 minutes late, and an hour-equals-22
+          # check silently no-ops the whole night when it slips -- Aug 13 and
+          # Aug 14 2026 both had every entry land outside hour 22, so no scrape
+          # ran at all and both runs still reported success.
+          #
+          # Exactly one entry matches the current UTC offset, which keeps this
+          # DST-correct without ever double-running.
+          offset=$(TZ=America/Chicago date +%z)
+          case "$offset" in
+            -0500) want='0 3 * * *' ;;   # CDT: 03:00 UTC == 22:00 Central
+            -0600) want='0 4 * * *' ;;   # CST: 04:00 UTC == 22:00 Central
+            *)     want='' ;;
+          esac
+
+          if [ "${{ github.event_name }}" = 'workflow_dispatch' ]; then
+            proceed=true
+          elif [ -n "$want" ] && [ "$SCHEDULE" = "$want" ]; then
+            proceed=true
           else
-            echo "proceed=false" >> "$GITHUB_OUTPUT"
-            echo "Local Central hour is $hour, not 22 -- this is the DST-mismatched cron entry for today, skipping (the other entry fires the real run)."
+            proceed=false
+            echo "Central offset is $offset, so today's real run is cron '$want'; this run came from '$SCHEDULE'. Skipping."
           fi
 
+          # A run that slipped past midnight still belongs to the previous local
+          # day -- otherwise a delayed Sunday-night run reads as Monday and
+          # quietly skips the weekly publish.
+          hour=$(TZ=America/Chicago date +%H)
+          if [ "$hour" -lt 12 ]; then
+            dow=$(TZ=America/Chicago date -d yesterday +%u)   # 1=Mon ... 7=Sun
+          else
+            dow=$(TZ=America/Chicago date +%u)
+          fi
+
+          publish=false
+          if [ "$proceed" = 'true' ] && [ "$dow" = '7' ]; then
+            publish=true
+          fi
+          if [ "$FORCE_PUBLISH" = 'true' ]; then
+            publish=true   # the input's whole point is "regardless of weekday"
+          fi
+
+          echo "proceed=$proceed" >> "$GITHUB_OUTPUT"
+          echo "publish=$publish" >> "$GITHUB_OUTPUT"
+          echo "Central offset $offset, local hour $hour, weekday $dow -> proceed=$proceed publish=$publish"
+
       - uses: actions/setup-python@v5
-        if: steps.gate.outputs.proceed == 'true' || github.event_name == 'workflow_dispatch'
+        if: steps.gate.outputs.proceed == 'true'
         with:
           python-version: '3.11'
 
       - name: Install dependencies
-        if: steps.gate.outputs.proceed == 'true' || github.event_name == 'workflow_dispatch'
+        if: steps.gate.outputs.proceed == 'true'
         working-directory: ne-contracts
         run: pip install -r requirements.txt
 
       - name: Restore data/ cache
-        if: steps.gate.outputs.proceed == 'true' || github.event_name == 'workflow_dispatch'
+        if: steps.gate.outputs.proceed == 'true'
         uses: actions/cache/restore@v4
         with:
           path: ne-contracts/data
           key: ne-contracts-data-${{ github.run_id }}     # never pre-exists -- forces the restore-keys fallback below
           restore-keys: |
             ne-contracts-data-
+          # Fail here, loudly, rather than three steps later inside scrape.py.
+          # A miss means the baseline is gone, which is a 20+ hour re-scrape to
+          # recover from -- it should never be mistaken for a scraper bug.
+          fail-on-cache-miss: true
 
       - name: Log restored data/ sizes
-        if: steps.gate.outputs.proceed == 'true' || github.event_name == 'workflow_dispatch'
+        if: steps.gate.outputs.proceed == 'true'
         run: ls -la ne-contracts/data/*.csv 2>&1 || echo "no CSVs restored -- scrape.py --daily will refuse to run and fail this job"
 
       - name: Daily scrape -- contract
-        if: steps.gate.outputs.proceed == 'true' || github.event_name == 'workflow_dispatch'
+        if: steps.gate.outputs.proceed == 'true'
         working-directory: ne-contracts
         run: python3 scripts/scrape.py contract --daily
 
       - name: Daily scrape -- purchase-order
-        if: steps.gate.outputs.proceed == 'true' || github.event_name == 'workflow_dispatch'
+        if: steps.gate.outputs.proceed == 'true'
         working-directory: ne-contracts
         run: python3 scripts/scrape.py purchase-order --daily
 
       - name: Daily scrape -- state
-        if: steps.gate.outputs.proceed == 'true' || github.event_name == 'workflow_dispatch'
+        if: steps.gate.outputs.proceed == 'true'
         working-directory: ne-contracts
         run: python3 scripts/scrape.py state --daily
 
+      # Saving still runs on failure -- a scrape that died halfway has real
+      # progress worth keeping, and --daily resumes from it. But it must never
+      # save a data/ with no CSVs in it: restore takes the *newest* prefix
+      # match, so one empty cache shadows the good one on every run afterwards
+      # and the failure becomes self-perpetuating. That is exactly what took
+      # the nightly job down in Aug 2026.
+      - name: Check data/ is worth caching
+        id: cachecheck
+        if: always() && steps.gate.outputs.proceed == 'true'
+        run: |
+          if ls ne-contracts/data/*.csv >/dev/null 2>&1; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+            du -sh ne-contracts/data
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::ne-contracts/data holds no CSVs -- skipping the cache save so the existing good cache stays the newest match."
+          fi
+
       - name: Save data/ cache
-        if: always() && (steps.gate.outputs.proceed == 'true' || github.event_name == 'workflow_dispatch')
+        if: always() && steps.cachecheck.outputs.ok == 'true'
         uses: actions/cache/save@v4
         with:
           path: ne-contracts/data
           key: ne-contracts-data-${{ github.run_id }}-${{ github.run_attempt }}
 
+      # Only prune once this run has banked a good cache of its own, so a run
+      # that saved nothing can never age out the baseline it failed to replace.
       - name: Delete old data/ cache entries (keep newest 3)
-        if: always() && (steps.gate.outputs.proceed == 'true' || github.event_name == 'workflow_dispatch')
+        if: always() && steps.cachecheck.outputs.ok == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -99,22 +163,22 @@ jobs:
       # --- Weekly publish leg: Sunday only (or workflow_dispatch force_publish) ---
 
       - name: Check entity list drift
-        if: steps.gate.outputs.dow == '7' && (steps.gate.outputs.proceed == 'true' || github.event.inputs.force_publish == 'true')
+        if: steps.gate.outputs.publish == 'true'
         working-directory: ne-contracts
         run: python3 scripts/check_entity_drift.py
 
       - name: Build site
-        if: steps.gate.outputs.dow == '7' && (steps.gate.outputs.proceed == 'true' || github.event.inputs.force_publish == 'true')
+        if: steps.gate.outputs.publish == 'true'
         working-directory: ne-contracts
         run: python3 scripts/build_site.py
 
       - name: Guard rail on this week's diff
-        if: steps.gate.outputs.dow == '7' && (steps.gate.outputs.proceed == 'true' || github.event.inputs.force_publish == 'true')
+        if: steps.gate.outputs.publish == 'true'
         working-directory: ne-contracts
         run: python3 scripts/check_daily_diff.py
 
       - name: Commit and push the new build
-        if: steps.gate.outputs.dow == '7' && (steps.gate.outputs.proceed == 'true' || github.event.inputs.force_publish == 'true')
+        if: steps.gate.outputs.publish == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
