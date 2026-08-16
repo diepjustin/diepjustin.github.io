@@ -26,7 +26,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Two ways in: recovering an orphaned cache (restore below), or a
+      # bootstrap branch that carries the CSVs in the checkout itself. Both end
+      # at the same artifact, and neither requires committing 346 MB to main --
+      # a revert would not remove those objects from history.
+      - name: Did the checkout already supply the CSVs?
+        id: have
+        run: |
+          if ls ne-contracts/data/*.csv >/dev/null 2>&1; then
+            echo "csvs=true" >> "$GITHUB_OUTPUT"
+            echo "Checkout carries the CSVs -- bootstrap mode, skipping the cache restore."
+          else
+            echo "csvs=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Restore the branch-scoped data/ cache
+        if: steps.have.outputs.csvs != 'true'
         uses: actions/cache/restore@v4
         with:
           path: ne-contracts/data
