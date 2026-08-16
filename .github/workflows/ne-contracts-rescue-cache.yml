@@ -1,0 +1,56 @@
+name: NE Contracts rescue cache
+
+# One-off recovery tool, and it only works from this branch.
+#
+# GitHub scopes every Actions cache to the ref that saved it, and shares it
+# only with that same ref or the default branch. The original seed cache was
+# saved by a workflow_dispatch on `bootstrap-data-cache`, so `main` can never
+# restore it -- which is why the nightly scrape started failing with "refusing
+# --daily: data/nu_contracts.csv does not exist".
+#
+# Cache scope matches on the ref *name*, so re-creating this branch is enough
+# to see that cache again. This workflow restores it and re-publishes data/ as
+# an ordinary artifact, which -- unlike a cache -- any ref can download. The
+# companion `ne-contracts-seed-cache.yml` on main then turns that artifact back
+# into a cache saved under refs/heads/main, where the nightly run can reach it.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rescue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore the branch-scoped data/ cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ne-contracts/data
+          key: ne-contracts-data-rescue-${{ github.run_id }}   # never pre-exists -- forces the restore-keys fallback
+          restore-keys: |
+            ne-contracts-data-
+          fail-on-cache-miss: true
+
+      - name: Verify the restore actually carried the CSVs
+        run: |
+          ls -la ne-contracts/data/
+          # Prefix-restore takes the newest match, so an empty cache saved by a
+          # failed run would satisfy the step above while carrying nothing. The
+          # CSVs are the only thing worth rescuing, so require them explicitly.
+          if ! ls ne-contracts/data/*.csv >/dev/null 2>&1; then
+            echo "::error::restored cache contains no CSVs -- wrong cache matched, nothing to rescue"
+            exit 1
+          fi
+          du -sh ne-contracts/data
+
+      - name: Publish data/ as a cross-ref artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ne-contracts-data-rescue
+          path: ne-contracts/data
+          retention-days: 7
+          include-hidden-files: true
