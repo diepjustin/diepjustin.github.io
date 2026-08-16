@@ -14,6 +14,10 @@ on:
         description: 'Also run the weekly build+guard-rail+publish steps regardless of weekday'
         type: boolean
         default: false
+      dry_run:
+        description: 'Run the publish leg (drift check, build, guard rail) but do not commit or push. Implies force_publish.'
+        type: boolean
+        default: false
 
 permissions:
   contents: write   # to push the weekly build commit
@@ -35,6 +39,7 @@ jobs:
         env:
           SCHEDULE: ${{ github.event.schedule }}
           FORCE_PUBLISH: ${{ github.event.inputs.force_publish }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
         run: |
           # Gate on *which* cron entry fired, never on the wall clock. GitHub's
           # scheduler routinely fires 30-90 minutes late, and an hour-equals-22
@@ -78,9 +83,20 @@ jobs:
             publish=true   # the input's whole point is "regardless of weekday"
           fi
 
+          # dry_run exercises the publish leg without writing anything: the
+          # three scripts run, the commit/push steps do not. It implies
+          # force_publish so the leg is reachable on any weekday.
+          commit=$publish
+          if [ "$DRY_RUN" = 'true' ]; then
+            publish=true
+            commit=false
+            echo "dry_run: building and checking, but not committing or pushing."
+          fi
+
           echo "proceed=$proceed" >> "$GITHUB_OUTPUT"
           echo "publish=$publish" >> "$GITHUB_OUTPUT"
-          echo "Central offset $offset, local hour $hour, weekday $dow -> proceed=$proceed publish=$publish"
+          echo "commit=$commit" >> "$GITHUB_OUTPUT"
+          echo "Central offset $offset, local hour $hour, weekday $dow -> proceed=$proceed publish=$publish commit=$commit"
 
       - uses: actions/setup-python@v5
         if: steps.gate.outputs.proceed == 'true'
@@ -124,6 +140,67 @@ jobs:
         working-directory: ne-contracts
         run: python3 scripts/scrape.py state --daily
 
+      # --- Weekly publish leg: Sunday only (or workflow_dispatch force_publish) ---
+      #
+      # This runs *before* the cache save on purpose. check_daily_diff.py clears
+      # data/daily_diff_report.json on both its exit paths, and that clear only
+      # survives if the save happens afterwards. With the save first, the report
+      # accumulated forever and one bad day would have blocked every future
+      # publish permanently.
+
+      - name: Check entity list drift
+        if: steps.gate.outputs.publish == 'true'
+        working-directory: ne-contracts
+        run: python3 scripts/check_entity_drift.py
+
+      - name: Build site
+        if: steps.gate.outputs.publish == 'true'
+        working-directory: ne-contracts
+        run: python3 scripts/build_site.py
+
+      - name: Guard rail on this week's diff
+        if: steps.gate.outputs.publish == 'true'
+        working-directory: ne-contracts
+        run: python3 scripts/check_daily_diff.py
+
+      - name: Commit the new build
+        if: steps.gate.outputs.commit == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ne-contracts/d ne-contracts/manifest.json ne-contracts/data/scrape_meta.json
+          git diff --cached --quiet || git commit -m "Weekly rebuild: publish the week's daily-scraped changes"
+
+      # Phase two, deliberately a separate commit (HANDOFF.md section 3): the
+      # build this one replaces stays published, so a reader holding a cached
+      # index.html can still fetch the payload its manifest points at. Only
+      # builds older than that are retired. Without this the payload grew ~50 MB
+      # and 369 files every week, forever, on a .git already past 400 MB.
+      - name: Retire builds older than the previous one
+        if: steps.gate.outputs.commit == 'true'
+        working-directory: ne-contracts
+        run: |
+          # Build IDs are timestamps, so lexical order is chronological.
+          keep=$(ls -1 d 2>/dev/null | sort | tail -2)
+          echo "keeping: $(echo $keep | tr '\n' ' ')"
+          retired=0
+          for b in $(ls -1 d 2>/dev/null | sort); do
+            if ! printf '%s\n' "$keep" | grep -qxF "$b"; then
+              git rm -rq "d/$b"
+              echo "retired d/$b"
+              retired=$((retired + 1))
+            fi
+          done
+          if [ "$retired" -gt 0 ]; then
+            git commit -qm "Retire $retired superseded build director$([ "$retired" -eq 1 ] && echo y || echo ies)"
+          else
+            echo "nothing older than the previous build to retire"
+          fi
+
+      - name: Push the publish commits
+        if: steps.gate.outputs.commit == 'true'
+        run: git push origin main
+
       # Saving still runs on failure -- a scrape that died halfway has real
       # progress worth keeping, and --daily resumes from it. But it must never
       # save a data/ with no CSVs in it: restore takes the *newest* prefix
@@ -159,29 +236,3 @@ jobs:
           gh cache list --key ne-contracts-data- --json id,createdAt --limit 100 \
             | jq -r 'sort_by(.createdAt) | reverse | .[3:] | .[].id' \
             | xargs -r -n1 gh cache delete
-
-      # --- Weekly publish leg: Sunday only (or workflow_dispatch force_publish) ---
-
-      - name: Check entity list drift
-        if: steps.gate.outputs.publish == 'true'
-        working-directory: ne-contracts
-        run: python3 scripts/check_entity_drift.py
-
-      - name: Build site
-        if: steps.gate.outputs.publish == 'true'
-        working-directory: ne-contracts
-        run: python3 scripts/build_site.py
-
-      - name: Guard rail on this week's diff
-        if: steps.gate.outputs.publish == 'true'
-        working-directory: ne-contracts
-        run: python3 scripts/check_daily_diff.py
-
-      - name: Commit and push the new build
-        if: steps.gate.outputs.publish == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ne-contracts/d ne-contracts/manifest.json ne-contracts/data/scrape_meta.json
-          git diff --cached --quiet || git commit -m "Weekly rebuild: publish the week's daily-scraped changes"
-          git push origin main
