@@ -108,6 +108,14 @@ jobs:
         working-directory: ne-contracts
         run: pip install -r requirements.txt
 
+      # Before the scrape, not beside the build: these are pure-function tests
+      # over the format and the parsers, they need no network and no data/, and
+      # a broken parser should stop the run before it spends an hour fetching.
+      - name: Tests
+        if: steps.gate.outputs.proceed == 'true'
+        working-directory: ne-contracts
+        run: python3 -m pytest tests/ -q
+
       - name: Restore data/ cache
         if: steps.gate.outputs.proceed == 'true'
         uses: actions/cache/restore@v4
