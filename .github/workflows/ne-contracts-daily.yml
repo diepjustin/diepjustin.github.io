@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Pick the DST-correct cron entry / compute weekday
         id: gate
@@ -83,22 +83,22 @@ jobs:
             publish=true   # the input's whole point is "regardless of weekday"
           fi
 
-          # dry_run exercises the publish leg without writing anything: the
-          # three scripts run, the commit/push steps do not. It implies
-          # force_publish so the leg is reachable on any weekday.
-          commit=$publish
+          # dry_run exercises the publish leg without publishing: the checks
+          # run, the deploy is not dispatched. It implies force_publish so the
+          # leg is reachable on any weekday.
+          deploy=$publish
           if [ "$DRY_RUN" = 'true' ]; then
             publish=true
-            commit=false
-            echo "dry_run: building and checking, but not committing or pushing."
+            deploy=false
+            echo "dry_run: running the checks, but not dispatching a deploy."
           fi
 
           echo "proceed=$proceed" >> "$GITHUB_OUTPUT"
           echo "publish=$publish" >> "$GITHUB_OUTPUT"
-          echo "commit=$commit" >> "$GITHUB_OUTPUT"
-          echo "Central offset $offset, local hour $hour, weekday $dow -> proceed=$proceed publish=$publish commit=$commit"
+          echo "deploy=$deploy" >> "$GITHUB_OUTPUT"
+          echo "Central offset $offset, local hour $hour, weekday $dow -> proceed=$proceed publish=$publish deploy=$deploy"
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         if: steps.gate.outputs.proceed == 'true'
         with:
           python-version: '3.11'
@@ -118,7 +118,7 @@ jobs:
 
       - name: Restore data/ cache
         if: steps.gate.outputs.proceed == 'true'
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ne-contracts/data
           key: ne-contracts-data-${{ github.run_id }}     # never pre-exists -- forces the restore-keys fallback below
@@ -178,9 +178,9 @@ jobs:
       # asks it to run on a data change. It sits after the guard rail on
       # purpose: check_daily_diff.py fails the job, so a scrape it rejects
       # never reaches this step and never reaches the site. dry_run stops here
-      # too, since it sets commit=false.
+      # too, since it sets deploy=false.
       - name: Deploy the rebuilt site
-        if: steps.gate.outputs.commit == 'true'
+        if: steps.gate.outputs.deploy == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -207,7 +207,7 @@ jobs:
 
       - name: Save data/ cache
         if: always() && steps.cachecheck.outputs.ok == 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ne-contracts/data
           key: ne-contracts-data-${{ github.run_id }}-${{ github.run_attempt }}

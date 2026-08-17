@@ -27,7 +27,7 @@ jobs:
   seed:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Download data/ from the rescue run
         if: inputs.artifact_run_id != ''
@@ -54,7 +54,7 @@ jobs:
           du -sh ne-contracts/data
 
       - name: Save the cache under this ref
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ne-contracts/data
           key: ne-contracts-data-seed-${{ github.run_id }}-${{ github.run_attempt }}

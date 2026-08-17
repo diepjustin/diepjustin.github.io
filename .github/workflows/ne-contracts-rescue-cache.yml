@@ -24,7 +24,7 @@ jobs:
   rescue:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Two ways in: recovering an orphaned cache (restore below), or a
       # bootstrap branch that carries the CSVs in the checkout itself. Both end
@@ -42,7 +42,7 @@ jobs:
 
       - name: Restore the branch-scoped data/ cache
         if: steps.have.outputs.csvs != 'true'
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ne-contracts/data
           key: ne-contracts-data-rescue-${{ github.run_id }}   # never pre-exists -- forces the restore-keys fallback
@@ -63,7 +63,7 @@ jobs:
           du -sh ne-contracts/data
 
       - name: Publish data/ as a cross-ref artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ne-contracts-data-rescue
           path: ne-contracts/data

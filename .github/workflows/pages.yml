@@ -36,9 +36,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
@@ -56,7 +56,7 @@ jobs:
       # misses, the build below makes one.
       - name: Restore the last built payload
         id: payload
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             ne-contracts/d
@@ -86,7 +86,7 @@ jobs:
 
       - name: Restore data/ cache
         if: steps.decide.outputs.build == 'true'
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ne-contracts/data
           key: ne-contracts-data-${{ github.run_id }}   # never pre-exists; forces the fallback below
@@ -136,7 +136,7 @@ jobs:
 
       - name: Save the payload for the next run
         if: steps.decide.outputs.build == 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: |
             ne-contracts/d
@@ -168,7 +168,7 @@ jobs:
           test -d "_site/ne-contracts/$dir" || { echo "manifest names $dir but it is not staged"; exit 1; }
           echo "payload $dir present"
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: _site
 
@@ -180,4 +180,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
