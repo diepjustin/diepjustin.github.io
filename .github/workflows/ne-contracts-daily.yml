@@ -15,12 +15,12 @@ on:
         type: boolean
         default: false
       dry_run:
-        description: 'Run the publish leg (drift check, build, guard rail) but do not commit or push. Implies force_publish.'
+        description: 'Run the publish leg (drift check, guard rail) without deploying. Implies force_publish.'
         type: boolean
         default: false
 
 permissions:
-  contents: write   # to push the weekly build commit
+  contents: read     # this job no longer commits: pages.yml builds and deploys
   actions: write     # for `gh cache delete` cleanup
 
 concurrency:
@@ -161,53 +161,31 @@ jobs:
         working-directory: ne-contracts
         run: python3 scripts/check_entity_drift.py
 
-      - name: Build site
-        if: steps.gate.outputs.publish == 'true'
-        working-directory: ne-contracts
-        run: python3 scripts/build_site.py
-
+      # No build here any more. .github/workflows/pages.yml rebuilds the
+      # payload and deploys it as a Pages artifact, so nothing this job
+      # produces needs committing -- which is the whole point: every published
+      # build used to add ~50 MB to git history permanently.
+      #
+      # This step still gates publishing, though, because pages.yml only runs
+      # on a *successful* completion of this workflow. A scrape this rejects
+      # therefore never reaches the site.
       - name: Guard rail on this week's diff
         if: steps.gate.outputs.publish == 'true'
         working-directory: ne-contracts
         run: python3 scripts/check_daily_diff.py
 
-      - name: Commit the new build
+      # Publishing is a separate workflow now, and this is the only thing that
+      # asks it to run on a data change. It sits after the guard rail on
+      # purpose: check_daily_diff.py fails the job, so a scrape it rejects
+      # never reaches this step and never reaches the site. dry_run stops here
+      # too, since it sets commit=false.
+      - name: Deploy the rebuilt site
         if: steps.gate.outputs.commit == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ne-contracts/d ne-contracts/manifest.json ne-contracts/data/scrape_meta.json
-          git diff --cached --quiet || git commit -m "Weekly rebuild: publish the week's daily-scraped changes"
-
-      # Phase two, deliberately a separate commit (HANDOFF.md section 3): the
-      # build this one replaces stays published, so a reader holding a cached
-      # index.html can still fetch the payload its manifest points at. Only
-      # builds older than that are retired. Without this the payload grew ~50 MB
-      # and 369 files every week, forever, on a .git already past 400 MB.
-      - name: Retire builds older than the previous one
-        if: steps.gate.outputs.commit == 'true'
-        working-directory: ne-contracts
-        run: |
-          # Build IDs are timestamps, so lexical order is chronological.
-          keep=$(ls -1 d 2>/dev/null | sort | tail -2)
-          echo "keeping: $(echo $keep | tr '\n' ' ')"
-          retired=0
-          for b in $(ls -1 d 2>/dev/null | sort); do
-            if ! printf '%s\n' "$keep" | grep -qxF "$b"; then
-              git rm -rq "d/$b"
-              echo "retired d/$b"
-              retired=$((retired + 1))
-            fi
-          done
-          if [ "$retired" -gt 0 ]; then
-            git commit -qm "Retire $retired superseded build director$([ "$retired" -eq 1 ] && echo y || echo ies)"
-          else
-            echo "nothing older than the previous build to retire"
-          fi
-
-      - name: Push the publish commits
-        if: steps.gate.outputs.commit == 'true'
-        run: git push origin main
+          gh workflow run pages.yml --ref main
+          echo "dispatched pages.yml — it rebuilds the payload and deploys it"
 
       # Saving still runs on failure -- a scrape that died halfway has real
       # progress worth keeping, and --daily resumes from it. But it must never

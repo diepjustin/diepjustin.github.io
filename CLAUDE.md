@@ -4,7 +4,7 @@ Personal portfolio site for Justin Diep — journalism, advertising/PR, and broa
 
 ## Stack
 
-Plain static site — hand-written HTML and inline CSS. No build step, no framework, no package manager. Edits to the HTML are the deploy; pushing to `main` publishes the site.
+Plain static site — hand-written HTML and inline CSS. No framework, no package manager. Pushing to `main` publishes the site through the `Publish to Pages` workflow (`.github/workflows/pages.yml`), which takes a couple of minutes rather than being instant. Pages is deployed from that workflow's artifact, not from the branch, so the `ne-contracts/` payload never has to be committed — see that folder's `HANDOFF.md`.
 
 ## Layout
 

@@ -1,0 +1,183 @@
+name: Publish to Pages
+
+# Why this exists: GitHub Pages used to publish straight from main, so the
+# ~50 MB payload build_site.py produces had to be *committed* to be served.
+# Retiring old build directories kept the working tree small but nothing ever
+# left history, and .git reached 546 MB. Building here and deploying the result
+# as an artifact means git holds source only.
+#
+# The portfolio site at the repo root publishes through this workflow too. A
+# push still deploys, it just takes a couple of minutes rather than being
+# instant.
+
+on:
+  push:
+    branches: [main]
+  # The nightly scrape triggers this itself, on publish day and only after its
+  # guard rail has passed. Deliberately not a workflow_run trigger: that fires
+  # on every successful nightly, which would deploy all seven days while
+  # check_daily_diff.py only runs on one -- shipping unguarded data six days a
+  # week.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never two deploys at once, and never cancel one half-done: an interrupted
+# deployment leaves the site on its previous artifact, which is fine, but a
+# cancelled *build* wastes the 3 minutes it takes to make a payload.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        working-directory: ne-contracts
+        run: pip install -r requirements.txt
+
+      - name: Tests
+        working-directory: ne-contracts
+        run: python3 -m pytest tests/ -q
+
+      # Best effort, and the fallback that keeps the portfolio independent of
+      # the scraper. On an ordinary push this restores the payload the last
+      # build made, so no rebuild is needed and no CSVs are required. If it
+      # misses, the build below makes one.
+      - name: Restore the last built payload
+        id: payload
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ne-contracts/d
+            ne-contracts/manifest.json
+          key: ne-payload-${{ github.run_id }}
+          restore-keys: |
+            ne-payload-
+
+      # Rebuild when the data has just changed, or when there is no payload to
+      # fall back on. A push that only touches the portfolio does neither.
+      - name: Decide whether to rebuild
+        id: decide
+        env:
+          EVENT: ${{ github.event_name }}
+          RESTORED: ${{ steps.payload.outputs.cache-matched-key }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            echo "build=true" >> "$GITHUB_OUTPUT"
+            echo "rebuilding: dispatched, so the data has changed"
+          elif [ -z "$RESTORED" ] || [ ! -f ne-contracts/manifest.json ]; then
+            echo "build=true" >> "$GITHUB_OUTPUT"
+            echo "rebuilding: no payload to fall back on"
+          else
+            echo "build=false" >> "$GITHUB_OUTPUT"
+            echo "reusing the restored payload"
+          fi
+
+      - name: Restore data/ cache
+        if: steps.decide.outputs.build == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: ne-contracts/data
+          key: ne-contracts-data-${{ github.run_id }}   # never pre-exists; forces the fallback below
+          restore-keys: |
+            ne-contracts-data-
+          fail-on-cache-miss: true
+
+      # Descriptions come from a 19-hour document download that will never live
+      # in CI. scope.jsonl is its distilled output and small enough to fetch, so
+      # the build makes them properly instead of carrying the previous build's
+      # forward -- which it can no longer do anyway, now that the previous build
+      # is not in the repository.
+      - name: Fetch descriptions from the extraction release
+        if: steps.decide.outputs.build == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh release list --limit 20 --json tagName \
+                  --jq '[.[] | select(.tagName | startswith("extraction-data-"))] | sort_by(.tagName) | last | .tagName')
+          if [ -z "$tag" ]; then
+            echo "::warning::no extraction-data release found — building without descriptions"
+            exit 0
+          fi
+          echo "using release $tag"
+          gh release download "$tag" --pattern 'scope.jsonl.gz' --dir ne-contracts/data --clobber
+          gunzip -f ne-contracts/data/scope.jsonl.gz
+          wc -l < ne-contracts/data/scope.jsonl
+
+      - name: Build the payload
+        if: steps.decide.outputs.build == 'true'
+        working-directory: ne-contracts
+        run: python3 scripts/build_site.py
+
+      # Only one build directory is ever published now, because there is no
+      # git history to keep a superseded one alive for cached readers. The
+      # deployed artifact is atomic: readers get the new index.html and the new
+      # payload together.
+      - name: Keep only the build just made
+        if: steps.decide.outputs.build == 'true'
+        working-directory: ne-contracts
+        run: |
+          keep=$(python3 -c "import json;print(json.load(open('manifest.json'))['dir'].split('/')[-1])")
+          echo "keeping d/$keep"
+          for b in $(ls -1 d); do
+            [ "$b" = "$keep" ] || { rm -rf "d/$b"; echo "dropped d/$b"; }
+          done
+
+      - name: Save the payload for the next run
+        if: steps.decide.outputs.build == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ne-contracts/d
+            ne-contracts/manifest.json
+          key: ne-payload-${{ github.run_id }}
+
+      # Stage what actually gets published. Copying rather than uploading the
+      # checkout directly is deliberate: ne-contracts/data holds 363 MB of
+      # scraped CSVs and the extraction JSONL, none of which belongs on the
+      # site, and an exclude list is easier to audit than remembering to clean.
+      - name: Stage the site
+        run: |
+          mkdir -p _site
+          rsync -a ./ _site/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '_site' \
+            --exclude 'ne-contracts/data' \
+            --exclude 'ne-contracts/venv' \
+            --exclude '**/__pycache__' \
+            --exclude '.pytest_cache'
+          echo "staged $(du -sh _site | cut -f1)"
+          test -f _site/index.html
+          test -f _site/ne-contracts/index.html
+          test -f _site/ne-contracts/manifest.json
+          # The payload the manifest names must actually be there, or the site
+          # deploys with a page that cannot load its data.
+          dir=$(python3 -c "import json;print(json.load(open('_site/ne-contracts/manifest.json'))['dir'])")
+          test -d "_site/ne-contracts/$dir" || { echo "manifest names $dir but it is not staged"; exit 1; }
+          echo "payload $dir present"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
