@@ -168,7 +168,7 @@ jobs:
           test -d "_site/ne-contracts/$dir" || { echo "manifest names $dir but it is not staged"; exit 1; }
           echo "payload $dir present"
 
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
