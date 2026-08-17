@@ -4,7 +4,7 @@ Personal portfolio site for Justin Diep — journalism, advertising/PR, and broa
 
 ## Stack
 
-Plain static site — hand-written HTML and inline CSS. No framework, no package manager. Pushing to `main` publishes the site through the `Publish to Pages` workflow (`.github/workflows/pages.yml`), which takes a couple of minutes rather than being instant. Pages is deployed from that workflow's artifact, not from the branch, so the `ne-contracts/` payload never has to be committed — see that folder's `HANDOFF.md`.
+Plain static site — hand-written HTML and inline CSS. No framework, no package manager. Pushing to `main` publishes the site through the `Publish to Pages` workflow (`.github/workflows/pages.yml`), which takes a couple of minutes rather than being instant. Pages is deployed from that workflow's artifact, not from the branch, so the `ne-contracts/` payload never has to be committed — see that folder's `README.md`.
 
 ## Layout
 
@@ -25,8 +25,10 @@ Plain static site — hand-written HTML and inline CSS. No framework, no package
 A second, much larger project living in this same repo: a scraper and static
 searchable site for Nebraska state spending records, published at
 `https://diepjustin.github.io/ne-contracts/` off this repo's `main` branch.
-It has its own `README.md` (architecture, data format, caveats) and
-`HANDOFF.md` (current state, guard rails, things that bit us before) — read
-those before touching anything in that folder, especially before re-running
-the scraper (a full run is 20+ hours against a government server) or
-`build_site.py` (~50 MB of new committed payload per run).
+Its `README.md` is the single source of truth for that project — data caveats,
+architecture, guard rails, things that bit us before, and what is still open.
+(It absorbed the separate `HANDOFF.md` on 17 Aug 2026; two documents covering
+the same ground had already drifted apart and shipped a false claim to the
+site.) Read it before touching anything in that folder, especially the guard
+rails before re-running the scraper — a full run is 20+ hours against a
+government server.
