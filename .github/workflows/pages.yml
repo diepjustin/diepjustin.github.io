@@ -105,7 +105,11 @@ jobs:
       # the build makes them properly instead of carrying the previous build's
       # forward -- which it can no longer do anyway, now that the previous build
       # is not in the repository.
-      - name: Fetch descriptions from the extraction release
+      # Descriptions, and which documents each record publishes. Both are the
+      # distilled output of long downloads against the state's servers -- 19
+      # hours and ~23 hours -- so neither will ever be produced in CI, and both
+      # are small enough to fetch once they exist.
+      - name: Fetch descriptions and document lists from the extraction release
         if: steps.decide.outputs.build == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -120,6 +124,19 @@ jobs:
           gh release download "$tag" --pattern 'scope.jsonl.gz' --dir ne-contracts/data --clobber
           gunzip -f ne-contracts/data/scope.jsonl.gz
           wc -l < ne-contracts/data/scope.jsonl
+
+          # Absent on releases made before Aug 2026. Missing it is not a build
+          # failure: build_site.py then marks every row's document count
+          # unknown and the page claims nothing, which is the honest outcome
+          # and exactly what a partly-finished backfill looks like anyway.
+          if gh release download "$tag" --pattern 'documents.jsonl.gz' \
+               --dir ne-contracts/data --clobber 2>/dev/null; then
+            gunzip -f ne-contracts/data/documents.jsonl.gz
+            echo "document lists: $(wc -l < ne-contracts/data/documents.jsonl) records"
+          else
+            echo "::warning::release $tag carries no documents.jsonl.gz — \
+              building with every row's document count unknown"
+          fi
 
       - name: Build the payload
         if: steps.decide.outputs.build == 'true'
