@@ -129,13 +129,48 @@ jobs:
           # failure: build_site.py then marks every row's document count
           # unknown and the page claims nothing, which is the honest outcome
           # and exactly what a partly-finished backfill looks like anyway.
+          #
+          # Merged with the cached copy rather than replacing it. `--daily`
+          # writes an entry for every new record it finds, and data/ round-trips
+          # through the Actions cache, so clobbering here quietly destroyed the
+          # document list of every record scraped since the release was cut --
+          # 2,118 of them within a day of shipping, growing nightly, while the
+          # site went on reporting 99.7% and looking finished.
+          #
+          # Order matters: the cached file goes first so the release wins on any
+          # key both hold, since load_documents folds last-entry-wins and the
+          # release is the authoritative backfill. Records only the nightly has
+          # seen are unique keys and survive either way.
+          cached=ne-contracts/data/documents.jsonl
+          keep=""
+          if [ -f "$cached" ]; then
+            mv "$cached" ne-contracts/data/documents.cached.jsonl
+            keep=ne-contracts/data/documents.cached.jsonl
+            # A CI run killed mid-write leaves a partial last line. Glued to the
+            # release's first line it becomes a broken line in the middle of the
+            # file, which load_documents refuses to read past -- correctly, but
+            # it would fail every build from then on.
+            if [ -s "$keep" ] && [ -n "$(tail -c1 "$keep")" ]; then
+              echo "cached document log ends mid-write; dropping its last line"
+              sed -i '$d' "$keep"
+            fi
+          fi
+
           if gh release download "$tag" --pattern 'documents.jsonl.gz' \
                --dir ne-contracts/data --clobber 2>/dev/null; then
             gunzip -f ne-contracts/data/documents.jsonl.gz
-            echo "document lists: $(wc -l < ne-contracts/data/documents.jsonl) records"
+            if [ -n "$keep" ]; then
+              cat "$keep" "$cached" > ne-contracts/data/documents.merged.jsonl
+              mv ne-contracts/data/documents.merged.jsonl "$cached"
+              rm -f "$keep"
+            fi
+            echo "document lists: $(wc -l < "$cached") records after merge"
           else
+            # No asset on this release: keep whatever the nightly accumulated
+            # rather than throwing it away for nothing.
+            [ -n "$keep" ] && mv "$keep" "$cached"
             echo "::warning::release $tag carries no documents.jsonl.gz — \
-              building with every row's document count unknown"
+              building from the cached log alone"
           fi
 
       - name: Build the payload
