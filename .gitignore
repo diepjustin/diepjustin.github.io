@@ -1,0 +1,7 @@
+# macOS writes one of these into every folder it has opened in Finder. Two were
+# tracked (./ and photos/), so `git status` reported the repo dirty after simply
+# looking at it, and every commit risked carrying a binary of folder positions
+# and icon state. Ignored repo-wide; ne-contracts/.gitignore ignores its own
+# copy for the same reason.
+.DS_Store
+**/.DS_Store
