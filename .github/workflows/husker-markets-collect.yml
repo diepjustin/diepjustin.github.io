@@ -1,0 +1,80 @@
+name: husker-markets — daily collection
+
+# Runs the Kalshi collector once a day and keeps two things:
+#   * data/state/kalshi.json, committed to main so the next run knows its
+#     watermarks (a few KB);
+#   * the day's raw archive, uploaded as a workflow artifact (90-day
+#     retention). Raw is gitignored because a season of it is tens of MB.
+#     Where raw lives past 90 days is an open decision (RECON §6). Until it is
+#     made, download artifacts you care about; the same trades stay
+#     re-fetchable from the API for ~3 months plus the historical endpoints.
+#
+# Cadence is the point: markets settle and delist, and a market never seen
+# active is a market whose metadata came only from the historical mirror.
+
+on:
+  schedule:
+    # 10:00 UTC ≈ 5am Central, after Kalshi's overnight lull and before
+    # Saturday kickoffs move the numbers.
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: husker-markets-collect
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    # ~500 requests at one a second plus retries; anything past 40 min is hung.
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: ne-betting
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install
+        run: uv sync --frozen
+
+      - name: Collect Kalshi
+        env:
+          HUSKER_MARKETS_CONTACT: ${{ secrets.HUSKER_MARKETS_CONTACT || 'Justin Diep, The Daily Nebraskan' }}
+        run: uv run python -m collectors.kalshi | tee data/state/last_run_kalshi.json
+
+      # Runs even if Kalshi failed: a gap on one platform should not open a
+      # gap on the other. Markets settle and delist; a missed day is gone.
+      - name: Collect Polymarket
+        if: always()
+        env:
+          HUSKER_MARKETS_CONTACT: ${{ secrets.HUSKER_MARKETS_CONTACT || 'Justin Diep, The Daily Nebraskan' }}
+        run: uv run python -m collectors.polymarket | tee data/state/last_run_polymarket.json
+
+      - name: Upload raw archive
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: raw-${{ github.run_id }}
+          path: ne-betting/data/raw
+          retention-days: 90
+          if-no-files-found: warn
+
+      - name: Commit state
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/state/
+          if git diff --cached --quiet; then
+            echo "state unchanged"
+          else
+            git commit -m "husker-markets: daily collection state"
+            git push
+          fi
