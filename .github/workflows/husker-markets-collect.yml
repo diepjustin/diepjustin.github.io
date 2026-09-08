@@ -1,8 +1,11 @@
 name: husker-markets — daily collection
 
 # Runs the Kalshi collector once a day and keeps two things:
-#   * data/state/kalshi.json, committed to main so the next run knows its
-#     watermarks (a few KB);
+#   * the collectors' watermark state, kept in the Actions cache rather than
+#     committed. At the Nebraska scope it is a few KB, but the wide scope
+#     tracks 22,564 markets, and a multi-megabyte file rewritten by a daily
+#     commit is exactly the pattern this repo has already had to purge from
+#     its history once;
 #   * the day's raw archive, uploaded as a workflow artifact (90-day
 #     retention). Raw is gitignored because a season of it is tens of MB.
 #     Where raw lives past 90 days is an open decision (RECON §6). Until it is
@@ -19,8 +22,10 @@ on:
     - cron: '0 10 * * *'
   workflow_dispatch:
 
+# Read-only: this job no longer writes to the repository. State lives in the
+# cache and raw lives in an artifact.
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: husker-markets-collect
@@ -44,6 +49,35 @@ jobs:
       - name: Install
         run: uv sync --frozen
 
+      # Watermarks from the last run. The key carries the run id so every run
+      # writes a fresh entry, and the prefix restore-key picks up the newest
+      # previous one -- the same pattern the Pages workflow uses for its
+      # payload.
+      #
+      # Losing this cache is survivable, not a data gap: the collectors simply
+      # refetch from the beginning of each platform's live window, which is
+      # slow rather than lossy. GitHub evicts entries untouched for a week, so
+      # a job left disabled that long starts cold. The step below says which
+      # happened.
+      - name: Restore collector state
+        id: state
+        uses: actions/cache/restore@v5
+        with:
+          path: ne-betting/data/state
+          key: husker-state-${{ github.run_id }}
+          restore-keys: |
+            husker-state-
+
+      - name: Say whether state came back
+        run: |
+          if [ -n "${{ steps.state.outputs.cache-matched-key }}" ]; then
+            echo "restored ${{ steps.state.outputs.cache-matched-key }}"
+            wc -c data/state/*.json 2>/dev/null || true
+          else
+            echo "no state cache: this run starts cold and will refetch each"
+            echo "market from the start of its live window"
+          fi
+
       - name: Collect Kalshi
         env:
           HUSKER_MARKETS_CONTACT: ${{ secrets.HUSKER_MARKETS_CONTACT || 'Justin Diep, The Daily Nebraskan' }}
@@ -66,15 +100,12 @@ jobs:
           retention-days: 90
           if-no-files-found: warn
 
-      - name: Commit state
+      # Saved even when a collector failed, because the watermarks it did
+      # advance are still correct and re-fetching them costs hours at the wide
+      # scope.
+      - name: Save collector state
         if: always()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/state/
-          if git diff --cached --quiet; then
-            echo "state unchanged"
-          else
-            git commit -m "husker-markets: daily collection state"
-            git push
-          fi
+        uses: actions/cache/save@v5
+        with:
+          path: ne-betting/data/state
+          key: husker-state-${{ github.run_id }}
