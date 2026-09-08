@@ -50,6 +50,24 @@ jobs:
         working-directory: ne-contracts
         run: python3 -m pytest tests/ -q
 
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      # index.html is one self-contained file with no build step, so there is
+      # no .js for eslint to read; lint_page.py cuts the inline script out into
+      # .lint/, blank-padded so a reported line number is the line number in
+      # index.html, and runs a pinned eslint through npx. No package.json, no
+      # lockfile, no node_modules in the repo.
+      #
+      # It runs beside the tests because the tests cannot see this class of
+      # bug: a local `var end` shadowing the module-level end-date column
+      # blanked every End cell on the live site for months while the crc32
+      # selftest passed, because the payload was correct and the page was not.
+      - name: Lint the page
+        working-directory: ne-contracts
+        run: python3 scripts/lint_page.py
+
       # Best effort, and the fallback that keeps the portfolio independent of
       # the scraper. On an ordinary push this restores the payload the last
       # build made, so no rebuild is needed and no CSVs are required. If it
