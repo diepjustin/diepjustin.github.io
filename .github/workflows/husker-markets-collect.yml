@@ -70,6 +70,10 @@ jobs:
 
       - name: Say whether state came back
         run: |
+          # The directory is gitignored now, so a checkout with no cache hit
+          # does not have it, and the `tee` below would fail before the
+          # collector wrote anything.
+          mkdir -p data/state
           if [ -n "${{ steps.state.outputs.cache-matched-key }}" ]; then
             echo "restored ${{ steps.state.outputs.cache-matched-key }}"
             wc -c data/state/*.json 2>/dev/null || true
