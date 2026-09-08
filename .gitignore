@@ -5,3 +5,8 @@
 # copy for the same reason.
 .DS_Store
 **/.DS_Store
+
+# Claude Code's local dev-server config and permission settings — per-machine,
+# not part of any project's source or published output.
+.claude/
+**/.claude/
