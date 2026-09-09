@@ -36,11 +36,14 @@ jobs:
           SCHEDULE: ${{ github.event.schedule }}
           DRY_RUN: ${{ github.event.inputs.dry_run }}
         run: |
-          # Gate on *which* cron entry fired, never on the wall clock. GitHub's
-          # scheduler routinely fires 30-90 minutes late, and an hour-equals-22
-          # check silently no-ops the whole night when it slips -- Aug 13 and
-          # Aug 14 2026 both had every entry land outside hour 22, so no scrape
-          # ran at all and both runs still reported success.
+          # Gate on *which* cron entry fired, never on the wall clock. An
+          # hour-equals-22 check silently no-ops the whole night when the run
+          # slips -- Aug 13 and Aug 14 2026 both had every entry land outside
+          # hour 22, so no scrape ran at all and both runs still reported
+          # success. And it slips a long way: across the 28 nights to 9 Sep
+          # 2026 this entry was never once on time, median three hours late,
+          # worst 11.8 hours, and every night since 2 Sep between 4h20m and
+          # 4h50m. See "Nightly automation" in ne-contracts/README.md.
           #
           # Exactly one entry matches the current UTC offset, which keeps this
           # DST-correct without ever double-running.
