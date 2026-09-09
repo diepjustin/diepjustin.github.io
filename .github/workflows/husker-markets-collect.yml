@@ -95,12 +95,21 @@ jobs:
           HUSKER_MARKETS_CONTACT: ${{ secrets.HUSKER_MARKETS_CONTACT || 'Justin Diep, The Daily Nebraskan' }}
         run: uv run python -m collectors.polymarket | tee data/state/last_run_polymarket.json
 
+      # The artifact is a publication. On a public repository any GitHub
+      # account can download a run artifact, and raw Polymarket trades name
+      # the person who made each one. Raw itself is append-only and is not
+      # touched; this stages a separate redacted copy and only that is
+      # uploaded. See scripts/redact_for_upload.py.
+      - name: Stage a redacted copy for upload
+        if: always()
+        run: uv run python scripts/redact_for_upload.py
+
       - name: Upload raw archive
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: raw-${{ github.run_id }}
-          path: ne-betting/data/raw
+          path: ne-betting/data/raw_for_upload
           retention-days: 90
           if-no-files-found: warn
 
