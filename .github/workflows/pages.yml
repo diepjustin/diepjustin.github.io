@@ -13,17 +13,20 @@ name: Publish to Pages
 on:
   push:
     branches: [main]
-  # The nightly scrape triggers this itself, on publish day and only after its
-  # guard rail has passed. Deliberately not a workflow_run trigger: that fires
-  # on every successful nightly, which would deploy all seven days while
-  # check_daily_diff.py only runs on one -- shipping unguarded data six days a
-  # week.
+  # The nightly scrape triggers this itself, every night, and only after its
+  # guard rail has passed. Still deliberately not a workflow_run trigger, even
+  # now that the scrape publishes nightly: that fires on any successful
+  # completion and cannot see what the run decided. It would deploy after a
+  # night the DST gate correctly skipped, and after a dry run, neither of which
+  # produced anything to publish. The dispatch sits after check_daily_diff.py
+  # in the same job, so only a scrape that passed the guard rail reaches it.
   workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
+  actions: write     # for the `gh cache delete` prune below
 
 # Never two deploys at once, and never cancel one half-done: an interrupted
 # deployment leaves the site on its previous artifact, which is fine, but a
@@ -218,6 +221,24 @@ jobs:
             ne-contracts/d
             ne-contracts/manifest.json
           key: ne-payload-${{ hashFiles('ne-contracts/scripts/**', 'ne-contracts/data/*_scrape_progress.json') }}-${{ github.run_id }}
+
+      # Each build banks a 60 MB entry under a key no later run can match --
+      # the hash covers data/*_scrape_progress.json, which the scrape moves
+      # every night. GitHub evicts them after seven untouched days, so they
+      # were self-limiting while publishing was weekly; nightly publishing
+      # means seven live at once on top of whatever pushes add, and they share
+      # the repo's 10 GB cache budget with the ne-contracts-data- entries that
+      # stand for twenty hours of scraping. Pruned like those: only after this
+      # run has banked its own, so a run that saved nothing can never age out
+      # the payload a portfolio push would fall back on.
+      - name: Delete old payload cache entries (keep newest 3)
+        if: steps.decide.outputs.build == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh cache list --key ne-payload- --json id,createdAt --limit 100 \
+            | jq -r 'sort_by(.createdAt) | reverse | .[3:] | .[].id' \
+            | xargs -r -n1 gh cache delete
 
       # Stage what actually gets published. Copying rather than uploading the
       # checkout directly is deliberate: ne-contracts/data holds 363 MB of
