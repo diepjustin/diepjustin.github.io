@@ -71,16 +71,40 @@ jobs:
         working-directory: ne-contracts
         run: python3 scripts/lint_page.py
 
+      # Key the payload on what git says the inputs are, never on hashFiles
+      # over the workspace. hashFiles returned a different digest on every
+      # single run: seven consecutive runs to 9 Sep 2026 checked out a
+      # byte-identical ne-contracts/scripts tree (a5330ff) and identical
+      # progress blobs, and produced seven different digests. Restore
+      # therefore never matched a save, and *every* push rebuilt the payload
+      # it was supposed to be reusing -- three minutes and a 60 MB cache entry
+      # each time, while the README claimed a push needed no rebuild and no
+      # CSVs. Whatever hashFiles was seeing in the workspace was never
+      # identified; a tree id cannot have the same problem, because it comes
+      # from the commit rather than from whatever is lying on disk beside it.
+      #
+      # Semantics are otherwise unchanged and still load-bearing: the key must
+      # move when the builder does, or a push carrying a build_site.py fix
+      # redeploys the stale payload and reports success. That is the 17 Aug
+      # coverage-note bug, which deployed green while the site went on telling
+      # readers all 101 entities were still being collected.
+      - name: Key the payload cache on the commit
+        id: key
+        run: |
+          scripts=$(git rev-parse HEAD:ne-contracts/scripts) || {
+            echo "::error::no scripts tree on HEAD -- is this a full checkout?"
+            exit 1; }
+          data=$(git rev-parse HEAD:ne-contracts/data) || {
+            echo "::error::ne-contracts/data has no tracked files; the key needs"
+            echo "::error::the committed scrape checkpoints"
+            exit 1; }
+          echo "payload=ne-payload-$scripts-$data" >> "$GITHUB_OUTPUT"
+          echo "payload key: ne-payload-$scripts-$data"
+
       # Best effort, and the fallback that keeps the portfolio independent of
       # the scraper. On an ordinary push this restores the payload the last
       # build made, so no rebuild is needed and no CSVs are required. If it
       # misses, the build below makes one.
-      # Keyed on the code and checkpoints that decide what a payload contains,
-      # so changing the builder misses the cache and forces a rebuild. Without
-      # that, a push carrying a build_site.py fix redeployed the stale payload
-      # and reported success: the coverage-note fix on 17 Aug deployed green
-      # while the site kept telling readers all 101 entities were still being
-      # collected.
       - name: Restore the last built payload
         id: payload
         uses: actions/cache/restore@v5
@@ -88,9 +112,9 @@ jobs:
           path: |
             ne-contracts/d
             ne-contracts/manifest.json
-          key: ne-payload-${{ hashFiles('ne-contracts/scripts/**', 'ne-contracts/data/*_scrape_progress.json') }}-${{ github.run_id }}
+          key: ${{ steps.key.outputs.payload }}-${{ github.run_id }}
           restore-keys: |
-            ne-payload-${{ hashFiles('ne-contracts/scripts/**', 'ne-contracts/data/*_scrape_progress.json') }}-
+            ${{ steps.key.outputs.payload }}-
 
       # Rebuild when the data has just changed, or when there is no payload to
       # fall back on. A push that only touches the portfolio does neither.
@@ -220,17 +244,17 @@ jobs:
           path: |
             ne-contracts/d
             ne-contracts/manifest.json
-          key: ne-payload-${{ hashFiles('ne-contracts/scripts/**', 'ne-contracts/data/*_scrape_progress.json') }}-${{ github.run_id }}
+          key: ${{ steps.key.outputs.payload }}-${{ github.run_id }}
 
-      # Each build banks a 60 MB entry under a key no later run can match --
-      # the hash covers data/*_scrape_progress.json, which the scrape moves
-      # every night. GitHub evicts them after seven untouched days, so they
-      # were self-limiting while publishing was weekly; nightly publishing
-      # means seven live at once on top of whatever pushes add, and they share
-      # the repo's 10 GB cache budget with the ne-contracts-data- entries that
-      # stand for twenty hours of scraping. Pruned like those: only after this
-      # run has banked its own, so a run that saved nothing can never age out
-      # the payload a portfolio push would fall back on.
+      # Each build banks a 60 MB entry, and the nightly dispatch builds
+      # unconditionally, so they arrive nightly whether or not the key moved.
+      # GitHub evicts them after seven untouched days, so they were
+      # self-limiting while publishing was weekly; nightly publishing means
+      # seven live at once on top of whatever pushes add, and they share the
+      # repo's 10 GB cache budget with the ne-contracts-data- entries that
+      # stand for twenty hours of scraping. Pruned only after this run has
+      # banked its own, so a run that saved nothing can never age out the
+      # payload a portfolio push would fall back on.
       - name: Delete old payload cache entries (keep newest 3)
         if: steps.decide.outputs.build == 'true'
         env:
