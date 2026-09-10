@@ -23,7 +23,7 @@ Each of these was originally a sibling folder in this repo, publishing at that f
 | repo/folder | what | notes |
 | --- | --- | --- |
 | `ne-contracts/` | state contracts and purchase orders | see below; the largest and the one with guard rails; still in this repo |
-| `ne-connect/` | hub joining contracts, campaign finance and lobbying | `d/entities.json` is committed, unlike ne-contracts' payload; `new/` is the handoff spec the README says it was reconciled against; still in this repo |
+| [`ne-connect`](https://github.com/diepjustin/ne-connect) | hub joining contracts, campaign finance and lobbying | split out 10 Sep 2026; `d/entities.json` is committed, unlike ne-contracts' payload; `new/` is the handoff spec the README says it was reconciled against; `ingest/sources.py` reads its three sources from sibling repo clones, so it needs ne-contracts, ne-campaign-finance and ne-lobbying cloned alongside it; deploys from its own `main` (branch-deploy Pages, `.nojekyll`) |
 | [`ne-campaign-finance`](https://github.com/diepjustin/ne-campaign-finance) | NADC bulk extracts | split out 10 Sep 2026; `data/raw/`, `data/processed/` gitignored; deploys from its own `main` (branch-deploy Pages, `.nojekyll`) |
 | [`ne-lobbying`](https://github.com/diepjustin/ne-lobbying) | lobbyist positions and expense forms | split out 10 Sep 2026; CSVs gitignored and exist only locally; long sweeps, see its README; deploys from its own `main` (branch-deploy Pages, `.nojekyll`) |
 | [`ne-ice`](https://github.com/diepjustin/ne-ice) | ICE arrests and detention stays | split out 10 Sep 2026; `build.py` turns gitignored `.xlsx` exports into the committed `data.json`; deploys from its own `main` (branch-deploy Pages, `.nojekyll`) |
