@@ -29,7 +29,7 @@ Each of these was originally a sibling folder in this repo, publishing at that f
 | [`ne-ice`](https://github.com/diepjustin/ne-ice) | ICE arrests and detention stays | split out 10 Sep 2026; `build.py` turns gitignored `.xlsx` exports into the committed `data.json`; deploys from its own `main` (branch-deploy Pages, `.nojekyll`) |
 | `ne-betting/` | Kalshi and Polymarket markets on Nebraska football | `uv`-managed, own `pyproject.toml`; daily collector workflow; still in this repo |
 | [`salary-search`](https://github.com/diepjustin/salary-search) | University of Nebraska salaries, 2010-11 to 2026-27 | split out 10 Sep 2026; roster PDFs and budgeted-employee spreadsheets, each checked against the other; per-year CSVs committed, `data/raw/` is not; deploys from its own `main` (branch-deploy Pages, `.nojekyll`) |
-| `unl-events-calender/` | UNL events by major | nightly workflow commits `data/events.json`; still in this repo |
+| [`unl-events-calender`](https://github.com/diepjustin/unl-events-calender) | UNL events by major | split out 10 Sep 2026; nightly workflow (now in that repo) commits `data/events.json`; deploys from its own `main` (branch-deploy Pages, `.nojekyll`) |
 
 Python working files (`venv/`, `__pycache__/`, `.pytest_cache/`) are ignored from the root `.gitignore`; each project's own `.gitignore` carries only its data rules. Every project's tests run with `./venv/bin/python -m pytest tests/ -q` from its folder (ne-betting: `uv run pytest`).
 
