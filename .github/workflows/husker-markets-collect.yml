@@ -106,7 +106,7 @@ jobs:
 
       - name: Upload raw archive
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: raw-${{ github.run_id }}
           path: ne-betting/data/raw_for_upload
