@@ -18,18 +18,18 @@ Plain static site — hand-written HTML and inline CSS. No framework, no package
 
 ## The data projects
 
-Each of these is its own project in a sibling folder, publishing at that folder's URL. Each has a README (unl-events has `MAINTAINING.md`) that is the single source of truth for it — read that before touching anything inside, and keep it updated in the same change.
+Each of these was originally a sibling folder in this repo, publishing at that folder's URL. They are being migrated one at a time to their own GitHub repo, still owned by `diepjustin`, so each keeps publishing at the same `diepjustin.github.io/<name>/` path — a GitHub Pages project repo serves there automatically, so nothing on the homepage has to change. Local clones live as siblings of this repo directly under `~/Documents/GitHub/`. Each has a README (unl-events has `MAINTAINING.md`) that is the single source of truth for it.
 
-| folder | what | notes |
+| repo/folder | what | notes |
 | --- | --- | --- |
-| `ne-contracts/` | state contracts and purchase orders | see below; the largest and the one with guard rails |
-| `ne-connect/` | hub joining contracts, campaign finance and lobbying | `d/entities.json` is committed, unlike ne-contracts' payload; `new/` is the handoff spec the README says it was reconciled against |
-| `ne-campaign-finance/` | NADC bulk extracts | `data/raw/`, `data/processed/` gitignored |
-| `ne-lobbying/` | lobbyist positions and expense forms | CSVs gitignored and exist only locally; long sweeps, see its README |
-| `ne-ice/` | ICE arrests and detention stays | `build.py` turns gitignored `.xlsx` exports into the committed `data.json` |
-| `ne-betting/` | Kalshi and Polymarket markets on Nebraska football | `uv`-managed, own `pyproject.toml`; daily collector workflow |
-| `salary-search/` | University of Nebraska salaries, 2010-11 to 2026-27 | roster PDFs and budgeted-employee spreadsheets, each checked against the other; per-year CSVs committed, `data/raw/` is not |
-| `unl-events-calender/` | UNL events by major | nightly workflow commits `data/events.json` |
+| `ne-contracts/` | state contracts and purchase orders | see below; the largest and the one with guard rails; still in this repo |
+| `ne-connect/` | hub joining contracts, campaign finance and lobbying | `d/entities.json` is committed, unlike ne-contracts' payload; `new/` is the handoff spec the README says it was reconciled against; still in this repo |
+| `ne-campaign-finance/` | NADC bulk extracts | `data/raw/`, `data/processed/` gitignored; still in this repo |
+| `ne-lobbying/` | lobbyist positions and expense forms | CSVs gitignored and exist only locally; long sweeps, see its README; still in this repo |
+| [`ne-ice`](https://github.com/diepjustin/ne-ice) | ICE arrests and detention stays | split out 10 Sep 2026; `build.py` turns gitignored `.xlsx` exports into the committed `data.json`; deploys from its own `main` (branch-deploy Pages, `.nojekyll`) |
+| `ne-betting/` | Kalshi and Polymarket markets on Nebraska football | `uv`-managed, own `pyproject.toml`; daily collector workflow; still in this repo |
+| `salary-search/` | University of Nebraska salaries, 2010-11 to 2026-27 | roster PDFs and budgeted-employee spreadsheets, each checked against the other; per-year CSVs committed, `data/raw/` is not; still in this repo |
+| `unl-events-calender/` | UNL events by major | nightly workflow commits `data/events.json`; still in this repo |
 
 Python working files (`venv/`, `__pycache__/`, `.pytest_cache/`) are ignored from the root `.gitignore`; each project's own `.gitignore` carries only its data rules. Every project's tests run with `./venv/bin/python -m pytest tests/ -q` from its folder (ne-betting: `uv run pytest`).
 
