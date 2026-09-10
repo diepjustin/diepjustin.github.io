@@ -50,14 +50,26 @@ bad values is in that folder's README.
 
 ## The rest of the repo
 
+Everything below publishes from this same `main` branch, at the folder's name.
+
 | | |
 | --- | --- |
 | `index.html` | the homepage — about, awards, immigration reporting, featured writing, photography |
 | `404.html` | custom not-found page |
-| `assets/`, `photos/` | profile photo, résumé, and the photography on the homepage |
+| `assets/`, `photos/JPEG/` | profile photo, résumé, and the photography on the homepage |
+| `serve.py` | local preview server for any page here, at the path it will have on Pages |
 | `main-in-ballot-search/` | a small standalone lookup page |
-| `ne-contracts/` | the contracts scraper and site |
+| `ne-contracts/` | the contracts scraper and site, above |
+| `ne-connect/` | one search box across contracts, campaign finance and lobbying, joined at build time |
+| `ne-campaign-finance/` | scraper and normalizer for the NADC's campaign-finance extracts |
+| `ne-lobbying/` | scraper for the Legislature's lobbyist reports, feeding `ne-connect/` |
+| `ne-ice/` | where ICE arrests the people held in Nebraska's detention facilities |
+| `ne-betting/` | prediction-market activity on Nebraska football (Kalshi, Polymarket) |
+| `salary-search/` | University of Nebraska salary search |
+| `unl-events-calender/` | UNL events, ranked by major, refreshed nightly by a workflow |
 
+Each project folder has its own README (or `MAINTAINING.md`) and that file is the
+source of truth for the project: data caveats, how to run it, and what is unfinished.
 Plain HTML and CSS, hand-written, with no framework and no build step for the
 site itself. GitHub Pages publishes from the `Publish to Pages` workflow rather
 than from the branch, so the contracts payload never has to be committed.

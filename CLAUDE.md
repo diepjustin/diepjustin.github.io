@@ -11,13 +11,32 @@ Plain static site — hand-written HTML and inline CSS. No framework, no package
 - `index.html` — the whole homepage in one file (header, About, Awards, Immigration Reporting, Featured Writing, Photography). Sections use `id` anchors (`#about`, `#awards`, `#writing`) and CSS custom properties like `var(--text-color)`.
 - `404.html` — custom not-found page.
 - `assets/` — profile photo (`diepjustin-mug.jpeg`) and `justin-diep-resume.pdf`, both linked from `index.html`.
-- `photos/` — photography images (UUID- and camera-named `.jpeg/.JPG/.webp/.hires.jpg`).
+- `photos/JPEG/` — the photography the homepage serves. Only this folder is referenced; the camera originals were untracked on 8 Sep 2026.
+- `serve.py` — preview server for the whole repo. Serves the root so every project loads at its Pages path; takes an optional port.
 - `main-in-ballot-search/` — a small standalone sub-page (`index.html` + `cleanmail.csv`).
+- `robots.txt`, `sitemap.xml` — the sitemap lists only the homepage, ne-contracts and the ballot page.
+
+## The data projects
+
+Each of these is its own project in a sibling folder, publishing at that folder's URL. Each has a README (unl-events has `MAINTAINING.md`) that is the single source of truth for it — read that before touching anything inside, and keep it updated in the same change.
+
+| folder | what | notes |
+| --- | --- | --- |
+| `ne-contracts/` | state contracts and purchase orders | see below; the largest and the one with guard rails |
+| `ne-connect/` | hub joining contracts, campaign finance and lobbying | `d/entities.json` is committed, unlike ne-contracts' payload; `new/` is the handoff spec the README says it was reconciled against |
+| `ne-campaign-finance/` | NADC bulk extracts | `data/raw/`, `data/processed/` gitignored |
+| `ne-lobbying/` | lobbyist positions and expense forms | CSVs gitignored and exist only locally; long sweeps, see its README |
+| `ne-ice/` | ICE arrests and detention stays | `build.py` turns gitignored `.xlsx` exports into the committed `data.json` |
+| `ne-betting/` | Kalshi and Polymarket markets on Nebraska football | `uv`-managed, own `pyproject.toml`; daily collector workflow |
+| `salary-search/` | University of Nebraska salaries, 2010-11 to 2026-27 | roster PDFs and budgeted-employee spreadsheets, each checked against the other; per-year CSVs committed, `data/raw/` is not |
+| `unl-events-calender/` | UNL events by major | nightly workflow commits `data/events.json` |
+
+Python working files (`venv/`, `__pycache__/`, `.pytest_cache/`) are ignored from the root `.gitignore`; each project's own `.gitignore` carries only its data rules. Every project's tests run with `./venv/bin/python -m pytest tests/ -q` from its folder (ne-betting: `uv run pytest`).
 
 ## Working on the site
 
 - Article/award entries live directly in `index.html` as `.article-card` blocks; each has a `.tag` (publication) and a right-aligned date. Match the existing inline-style pattern when adding entries.
-- To preview locally, open `index.html` in a browser or run `python3 -m http.server` in the repo root.
+- To preview locally, run `python3 serve.py` in the repo root and open http://127.0.0.1:8765/ (or open `index.html` directly; the homepage fetches nothing).
 - Deploy = commit + push to `origin/main` (only when the user asks).
 
 ## `ne-contracts/`

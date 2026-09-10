@@ -10,3 +10,15 @@
 # not part of any project's source or published output.
 .claude/
 **/.claude/
+
+# Python working files, shared by every project under this root. Each project's
+# own .gitignore carries only its data rules, which differ.
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# R writes these into whatever directory it is started in.
+.Rhistory
+.RData
