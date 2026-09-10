@@ -24,7 +24,7 @@ Each of these was originally a sibling folder in this repo, publishing at that f
 | --- | --- | --- |
 | `ne-contracts/` | state contracts and purchase orders | see below; the largest and the one with guard rails; still in this repo |
 | `ne-connect/` | hub joining contracts, campaign finance and lobbying | `d/entities.json` is committed, unlike ne-contracts' payload; `new/` is the handoff spec the README says it was reconciled against; still in this repo |
-| `ne-campaign-finance/` | NADC bulk extracts | `data/raw/`, `data/processed/` gitignored; still in this repo |
+| [`ne-campaign-finance`](https://github.com/diepjustin/ne-campaign-finance) | NADC bulk extracts | split out 10 Sep 2026; `data/raw/`, `data/processed/` gitignored; deploys from its own `main` (branch-deploy Pages, `.nojekyll`) |
 | `ne-lobbying/` | lobbyist positions and expense forms | CSVs gitignored and exist only locally; long sweeps, see its README; still in this repo |
 | [`ne-ice`](https://github.com/diepjustin/ne-ice) | ICE arrests and detention stays | split out 10 Sep 2026; `build.py` turns gitignored `.xlsx` exports into the committed `data.json`; deploys from its own `main` (branch-deploy Pages, `.nojekyll`) |
 | `ne-betting/` | Kalshi and Polymarket markets on Nebraska football | `uv`-managed, own `pyproject.toml`; daily collector workflow; still in this repo |
