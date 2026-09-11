@@ -1,16 +1,15 @@
-"""Tiny static server for previewing any page in this repo (mimics GitHub Pages).
+"""Tiny static server for previewing the homepage (mimics GitHub Pages).
 
-Serves the repository root, so every project loads at the path it has on
-GitHub Pages: http://127.0.0.1:8765/ne-contracts/, /ne-ice/, /salary-search/,
-and so on. Pages that fetch data with a relative URL need this; opening the
-file directly does not work for them.
+Serves the repository root at http://127.0.0.1:8765/ — though the homepage
+fetches nothing, so opening index.html directly works just as well.
 
     python3 serve.py            # port 8765
     python3 serve.py 8778       # any other port
 
 Computes the root from __file__ because os.getcwd() is not always permitted in
-the preview sandbox. Replaces the identical copies that lived in
-ne-contracts/scripts/serve_site.py and ne-ice/serve.py.
+the preview sandbox. Every data project that used to live in this repo and
+need this server (ne-contracts, ne-ice, and so on) has since split into its own
+repo; each keeps its own local preview setup now.
 """
 
 import functools

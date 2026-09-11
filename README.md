@@ -32,10 +32,11 @@ The whole thing is static: no server, no database, no API. The payload is packed
 into binary columns so 743,899 rows can be filtered on a keystroke, with link
 tokens and descriptions fetched only for the rows someone actually opens.
 
-**[`ne-contracts/README.md`](ne-contracts/README.md) is the real documentation** —
-what the data does and does not cover, how the scraper and payload work, the
-guard rails around re-running it, and a long list of things that went wrong and
-what they cost. Read it before changing anything in that folder.
+**[`ne-contracts`'s own README](https://github.com/diepjustin/ne-contracts/blob/main/README.md)
+is the real documentation** — what the data does and does not cover, how the
+scraper and payload work, the guard rails around re-running it, and a long list
+of things that went wrong and what they cost. Read it before changing anything
+there. (It's a separate repo now — see below.)
 
 ### Before quoting it
 
@@ -50,33 +51,44 @@ bad values is in that folder's README.
 
 ## The rest of the repo
 
-Everything below publishes from this same `main` branch, at the folder's name.
+Everything below is the portfolio itself and lives in this repo.
 
 | | |
 | --- | --- |
 | `index.html` | the homepage — about, awards, immigration reporting, featured writing, photography |
 | `404.html` | custom not-found page |
 | `assets/`, `photos/JPEG/` | profile photo, résumé, and the photography on the homepage |
-| `serve.py` | local preview server for any page here, at the path it will have on Pages |
+| `serve.py` | local preview server for the homepage |
 | `main-in-ballot-search/` | a small standalone lookup page |
-| `ne-contracts/` | the contracts scraper and site, above |
-| `ne-connect/` | one search box across contracts, campaign finance and lobbying, joined at build time |
-| `ne-campaign-finance/` | scraper and normalizer for the NADC's campaign-finance extracts |
-| `ne-lobbying/` | scraper for the Legislature's lobbyist reports, feeding `ne-connect/` |
-| `ne-ice/` | where ICE arrests the people held in Nebraska's detention facilities |
-| `ne-betting/` | prediction-market activity on Nebraska football (Kalshi, Polymarket) |
-| `salary-search/` | University of Nebraska salary search |
-| `unl-events-calender/` | UNL events, ranked by major, refreshed nightly by a workflow |
 
-Each project folder has its own README (or `MAINTAINING.md`) and that file is the
-source of truth for the project: data caveats, how to run it, and what is unfinished.
-Plain HTML and CSS, hand-written, with no framework and no build step for the
-site itself. GitHub Pages publishes from the `Publish to Pages` workflow rather
-than from the branch, so the contracts payload never has to be committed.
+Plain HTML and CSS, hand-written, with no framework and no build step. GitHub
+Pages publishes from the `Publish to Pages` workflow rather than from the
+branch, though there's nothing left here to build — the workflow just stages
+and deploys the checkout.
+
+## The data projects
+
+Each of these used to be a folder in this repo and is now its own GitHub repo,
+still under `diepjustin`, publishing at the same `diepjustin.github.io/<name>/`
+path it always had:
+
+| | |
+| --- | --- |
+| [`ne-contracts`](https://github.com/diepjustin/ne-contracts) | the contracts scraper and site, above |
+| [`ne-connect`](https://github.com/diepjustin/ne-connect) | one search box across contracts, campaign finance and lobbying, joined at build time |
+| [`ne-campaign-finance`](https://github.com/diepjustin/ne-campaign-finance) | scraper and normalizer for the NADC's campaign-finance extracts |
+| [`ne-lobbying`](https://github.com/diepjustin/ne-lobbying) | scraper for the Legislature's lobbyist reports, feeding ne-connect |
+| [`ne-ice`](https://github.com/diepjustin/ne-ice) | where ICE arrests the people held in Nebraska's detention facilities |
+| [`ne-betting`](https://github.com/diepjustin/ne-betting) | prediction-market activity on Nebraska football (Kalshi, Polymarket) |
+| [`salary-search`](https://github.com/diepjustin/salary-search) | University of Nebraska salary search |
+| [`unl-events-calender`](https://github.com/diepjustin/unl-events-calender) | UNL events, ranked by major, refreshed nightly by a workflow |
+
+Each has its own README (or `MAINTAINING.md`) that is the source of truth for
+that project: data caveats, how to run it, and what is unfinished.
 
 ---
 
 Public records used here come from the Nebraska Department of Administrative
 Services and are published under
 [Neb. Rev. Stat. § 84-602.04](https://nebraskalegislature.gov/laws/statutes.php?statute=84-602.04).
-Code is MIT licensed — see [`ne-contracts/LICENSE`](ne-contracts/LICENSE).
+Code is MIT licensed — see [`ne-contracts`'s LICENSE](https://github.com/diepjustin/ne-contracts/blob/main/LICENSE).
