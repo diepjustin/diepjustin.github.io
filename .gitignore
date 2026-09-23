@@ -1,24 +1,11 @@
-# macOS writes one of these into every folder it has opened in Finder. Two were
-# tracked (./ and photos/), so `git status` reported the repo dirty after simply
-# looking at it, and every commit risked carrying a binary of folder positions
-# and icon state. Ignored repo-wide; ne-contracts/.gitignore ignores its own
-# copy for the same reason.
+# macOS writes one of these into every folder it has opened in Finder; two were
+# once tracked here and made the repo look dirty after simply browsing it.
 .DS_Store
-**/.DS_Store
 
 # Claude Code's local dev-server config and permission settings — per-machine,
-# not part of any project's source or published output.
+# not part of the site.
 .claude/
-**/.claude/
 
-# Python working files, shared by every project under this root. Each project's
-# own .gitignore carries only its data rules, which differ.
-venv/
-.venv/
+# Bytecode from running serve.py.
 __pycache__/
 *.pyc
-.pytest_cache/
-
-# R writes these into whatever directory it is started in.
-.Rhistory
-.RData

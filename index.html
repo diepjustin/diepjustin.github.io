@@ -19,10 +19,10 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=dark_mode,light_mode,menu&display=block" rel="stylesheet"/>
 <style>
   html,body{margin:0;padding:0;}
-  body{overscroll-behavior:none;}
+  body{overscroll-behavior:none;background:rgb(var(--noir-bg));color:var(--ink-secondary);}
   main>:first-child{margin-top:0!important;}
   ::-webkit-scrollbar{display:none;}
   .material-symbols-outlined{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;}
@@ -64,7 +64,7 @@
     *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important;}
   }
 </style>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.tailwindcss.com/3.4.17?plugins=forms,container-queries"></script>
 <script id="tailwind-config">tailwind.config = {
   darkMode: "class",
   theme: {
@@ -268,7 +268,7 @@
 
       <article class="flex flex-col justify-between bg-surface border border-border-subtle p-space-md rounded-xl hover:border-zinc-500 transition-all group shadow-md">
         <a href="https://www.stltoday.com/news/local/crime-courts/article_98b76691-8411-46e3-9818-d48b2059b610.html" target="_blank" rel="noopener noreferrer" class="mb-space-sm rounded-lg overflow-hidden aspect-video bg-noir-bg border border-border-subtle block">
-          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/stltoday.com/content/tncms/assets/v3/editorial/9/8b/98b76691-8411-46e3-9818-d48b2059b610/6a545379ecc2b.preview.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize"/>
+          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/stltoday.com/content/tncms/assets/v3/editorial/9/8b/98b76691-8411-46e3-9818-d48b2059b610/6a545379ecc2b.preview.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize" loading="lazy"/>
         </a>
         <div class="flex items-center justify-between font-label text-[11px] mb-space-xs">
           <span class="text-zinc-400 uppercase tracking-wider">St. Louis Post-Dispatch</span>
@@ -281,7 +281,7 @@
 
       <article class="flex flex-col justify-between bg-surface border border-border-subtle p-space-md rounded-xl hover:border-zinc-500 transition-all group shadow-md">
         <a href="https://livesinthebalance.news/inside-omaha-immigration-court/" target="_blank" rel="noopener noreferrer" class="mb-space-sm rounded-lg overflow-hidden aspect-video bg-noir-bg border border-border-subtle block">
-          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://livesinthebalance.news/wp-content/uploads/2026/05/Screenshot-2026-05-16-at-16.11.35.png"/>
+          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://livesinthebalance.news/wp-content/uploads/2026/05/Screenshot-2026-05-16-at-16.11.35.png" loading="lazy"/>
         </a>
         <div class="flex items-center justify-between font-label text-[11px] mb-space-xs">
           <span class="text-zinc-400 uppercase tracking-wider">Lives in the Balance</span>
@@ -311,7 +311,7 @@
           </div>
           <div class="md:col-span-4">
             <a href="https://www.dailynebraskan.com/news/unl-used-bad-data-to-make-27-5-million-cuts-faculty-say/article_8ad30fe6-4f53-4b7a-9071-5e222854fe6e.html" target="_blank" rel="noopener noreferrer" class="block rounded-lg overflow-hidden aspect-video bg-noir-bg border border-border-subtle">
-              <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/dailynebraskan.com/content/tncms/assets/v3/editorial/8/aa/8aa2c322-85f8-4925-a4c0-16885f9f90ec/690284e5174ba.image.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize"/>
+              <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/dailynebraskan.com/content/tncms/assets/v3/editorial/8/aa/8aa2c322-85f8-4925-a4c0-16885f9f90ec/690284e5174ba.image.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize" loading="lazy"/>
             </a>
           </div>
         </div>
@@ -336,7 +336,7 @@
           </div>
           <div class="md:col-span-4">
             <a href="https://omaha.com/news/local/crime-courts/article_48d546aa-e476-4fa0-a305-ea19a038f674.html" target="_blank" rel="noopener noreferrer" class="block rounded-lg overflow-hidden aspect-video bg-noir-bg border border-border-subtle">
-              <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/omaha.com/content/tncms/assets/v3/editorial/4/8d/48d546aa-e476-4fa0-a305-ea19a038f674/685639cece02c.preview.png?crop=1600%2C840%2C0%2C29&resize=1200%2C630&order=crop%2Cresize"/>
+              <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/omaha.com/content/tncms/assets/v3/editorial/4/8d/48d546aa-e476-4fa0-a305-ea19a038f674/685639cece02c.preview.png?crop=1600%2C840%2C0%2C29&resize=1200%2C630&order=crop%2Cresize" loading="lazy"/>
             </a>
           </div>
         </div>
@@ -344,7 +344,7 @@
 
       <article class="flex flex-col justify-between bg-surface border border-border-subtle p-space-md rounded-xl hover:border-zinc-500 transition-all group shadow-md">
         <a href="https://www.stltoday.com/news/local/business/article_4757b49e-f326-402e-a4b8-d7efa41456eb.html" target="_blank" rel="noopener noreferrer" class="mb-space-sm rounded-lg overflow-hidden aspect-video bg-noir-bg border border-border-subtle block">
-          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/stltoday.com/content/tncms/assets/v3/editorial/4/75/4757b49e-f326-402e-a4b8-d7efa41456eb/6a1f36704a2b1.preview.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize"/>
+          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/stltoday.com/content/tncms/assets/v3/editorial/4/75/4757b49e-f326-402e-a4b8-d7efa41456eb/6a1f36704a2b1.preview.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize" loading="lazy"/>
         </a>
         <div class="flex items-center justify-between font-label text-[11px] mb-space-xs">
           <span class="text-zinc-400 uppercase tracking-wider">St. Louis Post-Dispatch</span>
@@ -357,7 +357,7 @@
 
       <article class="flex flex-col justify-between bg-surface border border-border-subtle p-space-md rounded-xl hover:border-zinc-500 transition-all group shadow-md">
         <a href="https://omaha.com/news/state-regional/article_635efd64-6da7-494e-afa9-e354371f81da.html" target="_blank" rel="noopener noreferrer" class="mb-space-sm rounded-lg overflow-hidden aspect-video bg-noir-bg border border-border-subtle block">
-          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/omaha.com/content/tncms/assets/v3/editorial/6/35/635efd64-6da7-494e-afa9-e354371f81da/69e21d0105717.preview.jpg?crop=1763%2C926%2C0%2C125&resize=1200%2C630&order=crop%2Cresize"/>
+          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/omaha.com/content/tncms/assets/v3/editorial/6/35/635efd64-6da7-494e-afa9-e354371f81da/69e21d0105717.preview.jpg?crop=1763%2C926%2C0%2C125&resize=1200%2C630&order=crop%2Cresize" loading="lazy"/>
         </a>
         <div class="flex items-center justify-between font-label text-[11px] mb-space-xs">
           <span class="text-zinc-400 uppercase tracking-wider">Omaha World-Herald</span>
@@ -370,7 +370,7 @@
 
       <article class="flex flex-col justify-between bg-surface border border-border-subtle p-space-md rounded-xl hover:border-zinc-500 transition-all group shadow-md">
         <a href="https://www.dailynebraskan.com/news/jeffrey-epstein-calls-university-of-nebraska-creighton-not-good-places/article_961382a0-105f-40bd-b7fe-9100d4f66f42.html" target="_blank" rel="noopener noreferrer" class="mb-space-sm rounded-lg overflow-hidden aspect-video bg-noir-bg border border-border-subtle block">
-          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/dailynebraskan.com/content/tncms/assets/v3/editorial/8/d6/8d612ce7-c2f9-4ef0-bdfc-18015fe89e95/698bc0c7d405f.image.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize"/>
+          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/dailynebraskan.com/content/tncms/assets/v3/editorial/8/d6/8d612ce7-c2f9-4ef0-bdfc-18015fe89e95/698bc0c7d405f.image.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize" loading="lazy"/>
         </a>
         <div class="flex items-center justify-between font-label text-[11px] mb-space-xs">
           <span class="text-zinc-400 uppercase tracking-wider">The Daily Nebraskan</span>
@@ -383,7 +383,7 @@
 
       <article class="flex flex-col justify-between bg-surface border border-border-subtle p-space-md rounded-xl hover:border-zinc-500 transition-all group shadow-md">
         <a href="https://www.nebraskanewsservice.net/news/south-omaha-to-mccook-a-freshman-senators-fight-for-nebraska-s-immigrant-community/article_6c1eb962-03b7-4493-9fc5-1aac3ec96437.html" target="_blank" rel="noopener noreferrer" class="mb-space-sm rounded-lg overflow-hidden aspect-video bg-noir-bg border border-border-subtle block">
-          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.chicago2.vip.townnews.com/nebraskanewsservice.net/content/tncms/assets/v3/editorial/0/73/073dd761-d1fe-453d-ae68-2ba48772a51a/6941b776cd50b.image.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize"/>
+          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.chicago2.vip.townnews.com/nebraskanewsservice.net/content/tncms/assets/v3/editorial/0/73/073dd761-d1fe-453d-ae68-2ba48772a51a/6941b776cd50b.image.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize" loading="lazy"/>
         </a>
         <div class="flex items-center justify-between font-label text-[11px] mb-space-xs">
           <span class="text-zinc-400 uppercase tracking-wider">Nebraska News Service</span>
@@ -396,7 +396,7 @@
 
       <article class="flex flex-col justify-between bg-surface border border-border-subtle p-space-md rounded-xl hover:border-zinc-500 transition-all group shadow-md">
         <a href="https://omaha.com/news/local/article_10f919e4-8d35-4b71-8b67-d9ed748ab0b8.html" target="_blank" rel="noopener noreferrer" class="mb-space-sm rounded-lg overflow-hidden aspect-video bg-noir-bg border border-border-subtle block">
-          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/omaha.com/content/tncms/assets/v3/editorial/1/0f/10f919e4-8d35-4b71-8b67-d9ed748ab0b8/6894ed6c549f1.preview.jpg?crop=1920%2C1008%2C0%2C35&resize=1200%2C630&order=crop%2Cresize"/>
+          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/omaha.com/content/tncms/assets/v3/editorial/1/0f/10f919e4-8d35-4b71-8b67-d9ed748ab0b8/6894ed6c549f1.preview.jpg?crop=1920%2C1008%2C0%2C35&resize=1200%2C630&order=crop%2Cresize" loading="lazy"/>
         </a>
         <div class="flex items-center justify-between font-label text-[11px] mb-space-xs">
           <span class="text-zinc-400 uppercase tracking-wider">Omaha World-Herald</span>
@@ -409,7 +409,7 @@
 
       <article class="flex flex-col justify-between bg-surface border border-border-subtle p-space-md rounded-xl hover:border-zinc-500 transition-all group shadow-md">
         <a href="https://omaha.com/news/local/article_cfbf8dec-31d4-4eef-83ae-49a146b357fd.html" target="_blank" rel="noopener noreferrer" class="mb-space-sm rounded-lg overflow-hidden aspect-video bg-noir-bg border border-border-subtle block">
-          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/omaha.com/content/tncms/assets/v3/editorial/c/fb/cfbf8dec-31d4-4eef-83ae-49a146b357fd/6848c251c0d31.preview.jpg?crop=1920%2C1008%2C0%2C35&resize=1200%2C630&order=crop%2Cresize"/>
+          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/omaha.com/content/tncms/assets/v3/editorial/c/fb/cfbf8dec-31d4-4eef-83ae-49a146b357fd/6848c251c0d31.preview.jpg?crop=1920%2C1008%2C0%2C35&resize=1200%2C630&order=crop%2Cresize" loading="lazy"/>
         </a>
         <div class="flex items-center justify-between font-label text-[11px] mb-space-xs">
           <span class="text-zinc-400 uppercase tracking-wider">Omaha World-Herald</span>
@@ -422,7 +422,7 @@
 
       <article class="flex flex-col justify-between bg-surface border border-border-subtle p-space-md rounded-xl hover:border-zinc-500 transition-all group shadow-md">
         <a href="https://journalstar.com/life-entertainment/local/faith-values/article_150c4da3-aa45-43af-81c2-d069619046a9.html" target="_blank" rel="noopener noreferrer" class="mb-space-sm rounded-lg overflow-hidden aspect-video bg-noir-bg border border-border-subtle block">
-          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.chicago2.vip.townnews.com/journalstar.com/content/tncms/assets/v3/editorial/1/50/150c4da3-aa45-43af-81c2-d069619046a9/681d1766be8b9.preview.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize"/>
+          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.chicago2.vip.townnews.com/journalstar.com/content/tncms/assets/v3/editorial/1/50/150c4da3-aa45-43af-81c2-d069619046a9/681d1766be8b9.preview.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize" loading="lazy"/>
         </a>
         <div class="flex items-center justify-between font-label text-[11px] mb-space-xs">
           <span class="text-zinc-400 uppercase tracking-wider">Lincoln Journal Star</span>
@@ -435,7 +435,7 @@
 
       <article class="flex flex-col justify-between bg-surface border border-border-subtle p-space-md rounded-xl hover:border-zinc-500 transition-all group shadow-md">
         <a href="https://www.dailynebraskan.com/news/nebraska-lawmakers-shut-down-winner-take-all-bill-blue-dot-survives/article_2b8d40c3-d4c6-4ddd-94f0-5a08aa761d3e.html" target="_blank" rel="noopener noreferrer" class="mb-space-sm rounded-lg overflow-hidden aspect-video bg-noir-bg border border-border-subtle block">
-          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/dailynebraskan.com/content/tncms/assets/v3/editorial/2/c4/2c4f408b-9042-45b7-8bf8-8a09273e5e7c/67f5707b84bb4.image.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize"/>
+          <img alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://bloximages.newyork1.vip.townnews.com/dailynebraskan.com/content/tncms/assets/v3/editorial/2/c4/2c4f408b-9042-45b7-8bf8-8a09273e5e7c/67f5707b84bb4.image.jpg?crop=1763%2C926%2C0%2C124&resize=1200%2C630&order=crop%2Cresize" loading="lazy"/>
         </a>
         <div class="flex items-center justify-between font-label text-[11px] mb-space-xs">
           <span class="text-zinc-400 uppercase tracking-wider">The Daily Nebraskan</span>
@@ -467,168 +467,168 @@
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="news">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/31902350-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Lincoln Fire & Rescue" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/31902350-e8e5-11f0-99f8-b3fa2ebac328.jpg" data-full="photos/JPEG/31902350-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Lincoln Fire & Rescue" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">A Lincoln Fire &amp; Rescue firefighter douses smoldering debris at a lumber yard near the University of Nebraska-Lincoln on Tuesday, March 11, 2025, in Lincoln. The fire damaged a nearby home and a few university vehicles.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="news">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/6632c787c8f97.image.jpg" alt="Protester at Nebraska Union" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/6632c787c8f97.image.jpg" data-full="photos/JPEG/6632c787c8f97.image.jpg" alt="Protester at Nebraska Union" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">A protester sits on a rock outside the Nebraska Union by Broyhill Fountain on Wednesday, May 1, 2024, in Lincoln. The protest was held all day to advocate for arrested university protesters, the loss of civilian lives in Gaza and the West Bank and for the University of Nebraska system to be more transparent with funds and grants from Israel.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="news">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/68044d92cca6c.hires.jpg" alt="Anti-Trump protest" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/68044d92cca6c.hires.jpg" data-full="photos/JPEG/68044d92cca6c.hires.jpg" alt="Anti-Trump protest" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Demonstrators gather outside the Nebraska Republican Party Headquarters for an anti-Trump protest on Saturday, April 19, 2025 in Lincoln, Neb. Protests took place in cities all over the the United States as part of the 50501—50 protests, 50 states, 1 movement.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="news">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/31bb5200-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Project 2025 Protests" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/31bb5200-e8e5-11f0-99f8-b3fa2ebac328.jpg" data-full="photos/JPEG/31bb5200-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Project 2025 Protests" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Dan Lued waves a heart flag outside the Nebraska State Capitol to demonstrate against Project 2025 and President Donald Trump’s policies on Wednesday, Feb. 5, 2025, in Lincoln. Protests took place in cities across the United States as part of the 50501—50 protests: 50 states, 1 movement.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="news">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/318acc20-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Charlie Kirk vigil" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/318acc20-e8e5-11f0-99f8-b3fa2ebac328.jpg" data-full="photos/JPEG/318acc20-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Charlie Kirk vigil" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">A person in a Make America Great Again hat holds flowers at a Charlie Kirk vigil outside the Nebraska Union on Wednesday, Sept. 17, 2025 in Lincoln. Kirk, the CEO and co-founder of Turning Point USA, was shot and killed at Utah Valley University Wednesday, Sept. 10.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="news">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/663289492b976.image.jpg" alt="Paul Barnes piano" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/663289492b976.image.jpg" data-full="photos/JPEG/663289492b976.image.jpg" alt="Paul Barnes piano" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Reflected in the raised lid of a piano, UNL Professor of Piano Paul Barnes performs an outdoor set inside the Richard Serra sculpture "Greenpoint" on Wednesday, May 1, 2024. The pop-up performance kicked off the Lincoln Calling music and arts festival, featuring works by composer Philip Glass as a tribute to the late sculptor.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="news">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/318f38f0-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Noon Year's Eve" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/318f38f0-e8e5-11f0-99f8-b3fa2ebac328.jpg" data-full="photos/JPEG/318f38f0-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Noon Year's Eve" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Camden Chadwell, 12, left, and Lila Chadwell, 3, blow horns at each other at the Henry Doorly Zoo &amp; Aquarium’s Noon Year's Eve celebration. The event offered an early alternative for families with young children to ring in 2026.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="news">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/67b652c396034.image.jpg" alt="Off Leash Dog Bar" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/67b652c396034.image.jpg" data-full="photos/JPEG/67b652c396034.image.jpg" alt="Off Leash Dog Bar" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Dogs run around Off Leash Dog Bar on Tuesday, Feb. 18, 2025, in Lincoln.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="sports">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/31aef5f0-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Basketball Court Storming" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/31aef5f0-e8e5-11f0-99f8-b3fa2ebac328.jpg" data-full="photos/JPEG/31aef5f0-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Basketball Court Storming" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Nebraska’s Jared Garcia (15) celebrates winning the game against Michigan State as fans storm the field at Pinnacle Bank Arena on Friday, Jan. 2, 2026, in Lincoln.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="sports">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/31ae32a0-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Football" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/31ae32a0-e8e5-11f0-99f8-b3fa2ebac328.jpg" data-full="photos/JPEG/31ae32a0-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Football" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Nebraska’s Nyziah Hunter (13) runs the ball into the end zone without one of his cleats during the fourth quarter of the game against Michigan State at Memorial Stadium on Saturday, Oct. 4, 2025 in Lincoln.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="sports">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/31bbee40-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Volleyball" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/31bbee40-e8e5-11f0-99f8-b3fa2ebac328.jpg" data-full="photos/JPEG/31bbee40-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Volleyball" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Nebraska’s Laney Choboy (6) wipes her face off after losing the NCAA regional semifinals against Texas A&amp;M at the Bob Devaney Sports Center on Sunday, Dec. 15, 2025, in Lincoln.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="sports">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/318fae20-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Football" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/318fae20-e8e5-11f0-99f8-b3fa2ebac328.jpg" data-full="photos/JPEG/318fae20-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Football" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Nebraska’s Emmett Johnson (21) scores a touchdown during the second quarter of the game against Akron at Memorial Stadium on Saturday, Sept. 6, 2025, in Lincoln.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="sports">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/JK0A9763.jpg" alt="Nebraska Men's Basketball" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/JK0A9763.jpg" data-full="photos/JPEG/JK0A9763.jpg" alt="Nebraska Men's Basketball" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Nebraska's Berke Büyüktuncel (9) dunks the ball during the second half of the game against West Georgia at Pinnacle Bank Arena on Monday, Nov. 3, 2025, in Lincoln.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="sports">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/693f4eda83565.image.jpg" alt="Nebraska Volleyball" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/693f4eda83565.image.jpg" data-full="photos/JPEG/693f4eda83565.image.jpg" alt="Nebraska Volleyball" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Nebraska’s Andi Jackson (15) hits the ball during the fourth set of the game against Texas A&amp;M at the Bob Devaney Sports Center on Sunday, Dec. 15, 2025, in Lincoln.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="sports">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/31c9a9e0-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Volleyball" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/31c9a9e0-e8e5-11f0-99f8-b3fa2ebac328.jpg" data-full="photos/JPEG/31c9a9e0-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Volleyball" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Nebraska celebrates as Creighton’s serve goes out of bounds during the third set of the game at the CHI Health Center on Tuesday, Sept. 16, 2025, in Omaha.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="sports">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/31dbab40-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Men's Basketball" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/31dbab40-e8e5-11f0-99f8-b3fa2ebac328.jpg" data-full="photos/JPEG/31dbab40-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Men's Basketball" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Nebraska’s Sam Hoiberg (1), New Hampshire's KiJan Robinson (8) and John Squire (7) reach for the ball during the first half of the game at Pinnacle Bank Arena on Tuesday, Dec. 30, 2025, in Lincoln.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="sports">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/6948ba0f0b155.hires-2.jpg" alt="Nebraska Basketball" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/6948ba0f0b155.hires-2.jpg" data-full="photos/JPEG/6948ba0f0b155.hires-2.jpg" alt="Nebraska Basketball" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Nebraska's Sam Hoiberg (1) jumps to shoot the ball during the second half of the game against North Dakota at Pinnacle Bank Arena on Sunday, Dec. 21, 2025, in Lincoln.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="sports">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/31a07700-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Men's Basketball" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/31a07700-e8e5-11f0-99f8-b3fa2ebac328.jpg" data-full="photos/JPEG/31a07700-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Nebraska Men's Basketball" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Nebraska’s Jamarques Lawrence (10) dribbles the ball during the first half of the game against Michigan State at Pinnacle Bank Arena on Friday, Jan. 2, 2026, in Lincoln.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="sports">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/6948ba141c28a.image.jpg" alt="Nebraska Men's Basketball" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/6948ba141c28a.image.jpg" data-full="photos/JPEG/6948ba141c28a.image.jpg" alt="Nebraska Men's Basketball" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Nebraska's Jamarques Lawrence (10) dribbles the ball during the second half of the game against North Dakota at Pinnacle Bank Arena on Sunday, Dec. 21, 2025, in Lincoln.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="sports">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/4V0A0150%202.jpg" alt="Pinnacle Bank Arena AVCA" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/4V0A0150%202.jpg" data-full="photos/JPEG/4V0A0150%202.jpg" alt="Pinnacle Bank Arena AVCA" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">A look at Pinnacle Bank Arena during AVCA tournament match between Nebraska and Stanford on Sunday, Aug. 24, 2025, in Lincoln.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="music">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/JK0A0810.jpg" alt="Joyrager Performance" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/JK0A0810.jpg" data-full="photos/JPEG/JK0A0810.jpg" alt="Joyrager Performance" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Joyrager performs at UPC’s Battle of the Bands at the Bourbon Theater, 1415 O St., on Wednesday, Oct. 1, 2025 in Lincoln. Joyrager and Hold Your Breath were voted as the winners of Battle of the Bands.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="music">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/31ad6f50-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Battle of the Bands" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/31ad6f50-e8e5-11f0-99f8-b3fa2ebac328.jpg" data-full="photos/JPEG/31ad6f50-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Battle of the Bands" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Mauricio Aguilera-Ortiz of Hold Your Breath performs at Battle of the Bands at the Bourbon Theater on Wednesday, Oct. 1, 2025 in Lincoln. Hold your Breath and Joyrager were voted as the winners of Battle of the Bands.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="music">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/69918ea941d6f.image.jpg" alt="Social Cinema" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/69918ea941d6f.image.jpg" data-full="photos/JPEG/69918ea941d6f.image.jpg" alt="Social Cinema" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">Social Cinema performs at Bodega’s Alley for night four of Lincoln Exposed on Sunday, Feb. 15, 2026, in Lincoln.</figcaption>
       </figure>
 
       <figure class="photo-card group flex flex-col bg-surface border border-border-subtle rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-colors" data-category="music">
         <button type="button" class="photo-open-btn relative aspect-[4/3] bg-noir-bg overflow-hidden w-full text-left block p-0 border-0 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-[-2px]">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/31a001d0-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Faith Revival Night" loading="lazy"/>
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="photos/JPEG/thumbs/31a001d0-e8e5-11f0-99f8-b3fa2ebac328.jpg" data-full="photos/JPEG/31a001d0-e8e5-11f0-99f8-b3fa2ebac328.jpg" alt="Faith Revival Night" loading="lazy"/>
         </button>
         <figcaption class="p-space-md text-xs text-zinc-300 leading-relaxed">The Mercy City Church worship team perform during the Faith Revival Night at East Stadium Loop on Sunday, Nov. 9, 2025, in Lincoln. Nebraska’s Dylan Raiola and Mercy City Church put on the event to get more people connected to their faith.</figcaption>
       </figure>
@@ -643,7 +643,7 @@
 
       <div class="bg-surface border border-border-subtle p-space-md rounded-xl shadow-lg flex flex-col hover:border-zinc-500 transition-colors">
         <div class="video-container relative pb-[56.25%] h-0 overflow-hidden rounded-lg border border-border-subtle mb-space-sm">
-          <iframe class="absolute top-0 left-0 w-full h-full" src="https://mediahub.unl.edu/media/26546?format=iframe&autoplay=0" title="Video Player: Run-Hide-Fight Active Shooter Preparedness" allowfullscreen></iframe>
+          <iframe class="absolute top-0 left-0 w-full h-full" src="https://mediahub.unl.edu/media/26546?format=iframe&autoplay=0" title="Video Player: Run-Hide-Fight Active Shooter Preparedness" loading="lazy" allowfullscreen></iframe>
         </div>
         <h3 class="font-headline text-lg text-ink-primary mb-1">Run-Hide-Fight Active Shooter Preparedness</h3>
         <p class="text-xs text-zinc-400 leading-relaxed">I directed this educational video for the <a class="text-ink-primary underline underline-offset-4 decoration-zinc-600 hover:decoration-ink-primary" href="https://news.unl.edu/article/experience-lab-produces-educational-video-on-active-shooter-response-for-unlpd" target="_blank" rel="noopener noreferrer">University of Nebraska-Lincoln Police Department</a> as part of a class project in the Production House experience lab. The video promotes campus safety by detailing the "Run, Hide, Fight" active shooter response strategy.</p>
@@ -651,7 +651,7 @@
 
       <div class="bg-surface border border-border-subtle p-space-md rounded-xl shadow-lg flex flex-col hover:border-zinc-500 transition-colors">
         <div class="video-container relative pb-[56.25%] h-0 overflow-hidden rounded-lg border border-border-subtle mb-space-sm">
-          <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/a7qSZyAqEJE?si=P3Za_M8T93sWH9-2" title="YouTube video player: On the Border: Sherry Wounded Foot's Story" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/a7qSZyAqEJE?si=P3Za_M8T93sWH9-2" title="YouTube video player: On the Border: Sherry Wounded Foot's Story" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" loading="lazy" allowfullscreen></iframe>
         </div>
         <h3 class="font-headline text-lg text-ink-primary mb-1">On the Border: Sherry Wounded Foot's Story</h3>
         <p class="text-xs text-zinc-400 leading-relaxed mb-space-sm">I assisted with filming an in-depth investigative reporting documentary led by Marissa Lindemann and Olivia Reed, and published by <a class="text-ink-primary underline underline-offset-4 decoration-zinc-600 hover:decoration-ink-primary" href="https://www.nebraskanewsservice.net/investigative/on-the-border-sherry-wounded-foots-story/article_7b7f7504-0c93-11ef-b62d-97c5ff0f39b5.html" target="_blank" rel="noopener noreferrer">Nebraska News Service</a>. Lindemann and Reed created the documentary for an in-depth reporting class on murdered and missing marginalized women. Specifically, I was brought on to help capture interviews and b-roll during their trip to Pine Ridge, South Dakota.</p>
@@ -660,7 +660,7 @@
 
       <div class="bg-surface border border-border-subtle p-space-md rounded-xl shadow-lg flex flex-col hover:border-zinc-500 transition-colors">
         <div class="video-container relative pb-[56.25%] h-0 overflow-hidden rounded-lg border border-border-subtle mb-space-sm">
-          <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/EK8JRFMSdrM?si=33PJib4ZIu4U4jAg" title="YouTube video player: Joyrager - Dooya?" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/EK8JRFMSdrM?si=33PJib4ZIu4U4jAg" title="YouTube video player: Joyrager - Dooya?" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" loading="lazy" allowfullscreen></iframe>
         </div>
         <h3 class="font-headline text-lg text-ink-primary mb-1">Joyrager - Dooya?</h3>
         <p class="text-xs text-zinc-500 italic leading-relaxed">This music video won a Student Production Award from the Heartland Region of the National Academy of Television Arts &amp; Sciences (NATAS).</p>
@@ -689,6 +689,8 @@
       <p class="text-sm text-zinc-300 mb-space-lg max-w-lg leading-relaxed">I'm always looking for new reporting opportunities and creative collaborations. Drop me a line below.</p>
       <form action="https://api.web3forms.com/submit" method="POST" class="w-full flex flex-col gap-space-sm text-left">
         <input type="hidden" name="access_key" value="71d9c2c5-cc13-47a5-8b1c-6b508c1d7421">
+        <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+        <input type="hidden" name="subject" value="New message from diepjustin.github.io">
         <label for="contact-name" class="sr-only">Your Name</label>
         <input id="contact-name" class="w-full bg-noir-bg border border-border-subtle px-space-sm py-2.5 rounded text-ink-primary text-base md:text-sm focus:outline-none focus:border-ink-primary focus:ring-1 focus:ring-ink-primary placeholder:text-zinc-600 transition-colors" type="text" name="name" placeholder="Your Name" required>
         <label for="contact-email" class="sr-only">Your Email</label>
@@ -766,9 +768,11 @@
         buttons.forEach(b => {
           b.classList.remove('bg-ink-primary', 'text-noir-bg', 'font-medium');
           b.classList.add('text-zinc-400');
+          b.setAttribute('aria-pressed', 'false');
         });
         btn.classList.add('bg-ink-primary', 'text-noir-bg', 'font-medium');
         btn.classList.remove('text-zinc-400');
+        btn.setAttribute('aria-pressed', 'true');
         const target = btn.getAttribute('data-target');
         cards.forEach(card => {
           card.style.display = (target === 'all' || card.getAttribute('data-category') === target) ? 'flex' : 'none';
@@ -796,7 +800,7 @@
       if (!lbGroup.length) return;
       lbIndex = (i + lbGroup.length) % lbGroup.length;
       const img = lbGroup[lbIndex];
-      lightboxImg.src = img.src;
+      lightboxImg.src = img.dataset.full || img.src;
       lightboxImg.alt = img.alt;
       const caption = img.closest('figure')?.querySelector('figcaption');
       lightboxCaption.textContent = caption ? caption.textContent.trim() : '';

@@ -8,13 +8,13 @@ Plain static site — hand-written HTML and inline CSS. No framework, no package
 
 ## Layout
 
-- `index.html` — the whole homepage in one file (header, About, Awards, Immigration Reporting, Featured Writing, Photography). Sections use `id` anchors (`#about`, `#awards`, `#writing`) and CSS custom properties like `var(--text-color)`.
+- `index.html` — the whole homepage in one file (header, Hero, About with publication logos, Awards, Featured Work, Photography with a tabbed gallery and lightbox, Video, Projects, Contact form). Sections use `id` anchors (`#about`, `#writing`, `#photography`, `#video`, `#projects`, `#contact`); styling is Tailwind utility classes from the Play CDN plus a few CSS custom properties (`--noir-bg`, `--ink-primary`, …) that the light/dark toggle swaps.
 - `404.html` — custom not-found page.
-- `assets/` — profile photo (`diepjustin-mug.jpeg`) and `justin-diep-resume.pdf`, both linked from `index.html`.
-- `photos/JPEG/` — the photography the homepage serves. Only this folder is referenced; the camera originals were untracked on 8 Sep 2026.
+- `assets/` — profile photo (`diepjustin-mug.jpeg`), `justin-diep-resume.pdf` and `logos/` (the publication logos in About), all linked from `index.html`.
+- `photos/JPEG/` — the photography the homepage serves. `photos/JPEG/thumbs/` holds 900px copies (`sips -Z 900 -s formatOptions 80`) that the gallery grid loads; the lightbox opens the full-size file via `data-full`. Only these folders are referenced; the camera originals were untracked on 8 Sep 2026.
 - `serve.py` — preview server. With every data project split into its own repo, only the homepage lives here now; run it from the repo root and open http://127.0.0.1:8765/, or just open `index.html` directly since the homepage fetches nothing.
 - `main-in-ballot-search/` — a small standalone sub-page (`index.html` + `cleanmail.csv`). Not a data project, stays in this repo.
-- `robots.txt`, `sitemap.xml` — lists the homepage, ne-contracts and the ballot page. ne-contracts' URL didn't change when it moved to its own repo, so this entry is still correct as-is.
+- `robots.txt`, `sitemap.xml` — the sitemap lists the homepage, the ballot page and each data project's `/<name>/` path. Those URLs didn't change when the projects moved to their own repos, so the entries are still correct as-is.
 
 ## The data projects
 
@@ -40,11 +40,10 @@ read that before touching anything inside.
 
 Each project's tests run with `./venv/bin/python -m pytest tests/ -q` from its own
 clone (ne-betting: `uv run pytest`). None of that applies here any more — this
-repo has no Python, no tests, and no `.gitignore` rules beyond `.DS_Store` and
-`.claude/`.
+repo has no Python project and no tests; `serve.py` is the only script.
 
 ## Working on the site
 
-- Article/award entries live directly in `index.html` as `.article-card` blocks; each has a `.tag` (publication) and a right-aligned date. Match the existing inline-style pattern when adding entries.
+- Article/award entries live directly in `index.html` as `<article>` blocks styled with Tailwind utility classes; each has a publication label and a right-aligned date. Copy an existing block and match its classes when adding entries.
 - To preview locally, run `python3 serve.py` in the repo root and open http://127.0.0.1:8765/ (or open `index.html` directly; the homepage fetches nothing).
 - Deploy = commit + push to `origin/main` (only when the user asks).

@@ -55,9 +55,9 @@ Everything below is the portfolio itself and lives in this repo.
 
 | | |
 | --- | --- |
-| `index.html` | the homepage — about, awards, immigration reporting, featured writing, photography |
+| `index.html` | the homepage — about, awards, featured work, photography, video, projects, contact form |
 | `404.html` | custom not-found page |
-| `assets/`, `photos/JPEG/` | profile photo, résumé, and the photography on the homepage |
+| `assets/`, `photos/JPEG/` | profile photo, résumé, publication logos (`assets/logos/`), and the photography on the homepage (`photos/JPEG/thumbs/` holds the grid-size copies) |
 | `serve.py` | local preview server for the homepage |
 | `main-in-ballot-search/` | a small standalone lookup page |
 

@@ -75,9 +75,10 @@
     <a href="/" class="home-btn">Return to Portfolio</a>
 
     <script>
-        // Match user's theme preference
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'dark') {
+        // Match the homepage: dark unless the visitor chose light (and dark when storage is blocked)
+        let currentTheme = null;
+        try { currentTheme = localStorage.getItem('theme'); } catch (e) {}
+        if (currentTheme !== 'light') {
             document.body.classList.add('dark-mode');
         }
     </script>
